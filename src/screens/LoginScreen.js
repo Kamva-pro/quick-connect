@@ -10,7 +10,7 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 // import { uploadImageToSupabase } from './uploadImage'; // Custom utility function for image upload
 
 // Import image from assets
-import logoImage from '../assets/logo.jpg';
+import logoImage from '../assets/logo.png';
 
 const LoginScreen = () => {
   return (
