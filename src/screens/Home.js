@@ -1,0 +1,39 @@
+export default function home()
+{
+    return (
+        <NavigationContainer>
+          <Tab.Navigator
+            screenOptions={{
+              tabBarActiveTintColor: "red",
+            }}>
+            <Tab.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Entypo name="home" size={size} color={color} />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Settings"
+              component={SettingsScreen}
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <FontAwesome name="cog" size={size} color={color} />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Profile"
+              component={ProfileScreen}
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="person" size={size} color={color} />
+                ),
+              }}
+            />
+          </Tab.Navigator>
+        </NavigationContainer>
+      );
+    }
