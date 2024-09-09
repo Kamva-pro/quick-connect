@@ -2,6 +2,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import {ProfileScreen} from './ProfileScreen';
+import {Dashboard} from "./Dashboard";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,7 +17,7 @@ export default function home()
             }}>
             <Tab.Screen
               name="Home"
-              component={HomeScreen}
+              component={Dashboard}
               options={{
                 tabBarIcon: ({ color, size }) => (
                   <Entypo name="home" size={size} color={color} />
