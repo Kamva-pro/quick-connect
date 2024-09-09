@@ -118,9 +118,18 @@ async function googleAuth() {
     try {
       const result = await firebase.auth().signInWithCredential(credential);
       const user = result.user;
-      console.log('User successfully signed in with Google');
 
-      insertUserProfile(clientId)
+      if(user)
+      {
+        // Retrieve user information
+        const uid = user.uid;
+        const displayName = user.displayName || 'Anonymous'; // Display name may be null
+        const email = user.email;
+
+        // Insert user into Supabase table
+        await insertUserProfile(uid, displayName, email);
+      }
+      
     } catch (error) {
       console.error('Google Authentication Error:', error);
     }
