@@ -5,6 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import * as Google from 'expo-auth-session/providers/google';
 import { firebase } from './firebaseConfig';
 import * as Facebook from 'expo-facebook';
+import { supabase } from './supabaseClient';
 import * as AppleAuthentication from 'expo-apple-authentication';
 
 // Import image from assets
@@ -115,8 +116,11 @@ async function googleAuth() {
     const { id_token } = response.params;
     const credential = firebase.auth.GoogleAuthProvider.credential(id_token);
     try {
-      await firebase.auth().signInWithCredential(credential);
+      const result = await firebase.auth().signInWithCredential(credential);
+      const user = result.user;
       console.log('User successfully signed in with Google');
+
+      insertUserProfile(clientId)
     } catch (error) {
       console.error('Google Authentication Error:', error);
     }
@@ -170,5 +174,20 @@ async function appleAuth() {
     console.error('Apple Authentication Error:', error);
   }
 }
+
+async function insertUserProfile(uid, username, email) {
+  const { data, error } = await supabase
+    .from('users')
+    .insert([
+      { uid, username, email, phone_number: null, occupation: null, linkedin_url: null, instagram_handle: null, github_repo: null, website_link: null, qr_code_image_url: null }
+    ]);
+
+  if (error) {
+    console.error('Error inserting user profile:', error);
+  } else {
+    console.log('User profile created:', data);
+  }
+}
+
 
 export default LoginScreen;
