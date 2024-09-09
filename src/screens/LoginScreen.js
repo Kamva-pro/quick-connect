@@ -4,9 +4,9 @@ import { FontAwesome } from '@expo/vector-icons';
 import * as Google from 'expo-auth-session/providers/google';
 import { firebase } from '../firebaseConfig';
 import * as Facebook from 'expo-facebook';
-import { supabase } from './supabaseClient';
+import { supabase } from '../supabaseClient';
 import * as AppleAuthentication from 'expo-apple-authentication';
-import QRCode from 'qrcode'; // Add QRCode library
+import QRCode from 'react-native-qrcode-svg'; // Updated QR Code library
 import { uploadImageToSupabase } from './uploadImage'; // Custom utility function for image upload
 
 // Import image from assets
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   topImage: {
-    width: "200px",
+    width: 200,
     resizeMode: 'contain',  // Covers the image properly
   },
   buttonContainer: {
@@ -108,13 +108,10 @@ const styles = StyleSheet.create({
 async function generateQRCode(uid) {
   try {
     const qrCodeData = `https://yourapp.com/user/${uid}`;
-    const qrCodeUrl = await QRCode.toDataURL(qrCodeData);
-
-    // Upload QR code to Supabase Storage and return URL
-    const imageUrl = await uploadImageToSupabase(`qr_codes/${uid}.png`, qrCodeUrl);
-    return imageUrl;
+    // Generate QR code component
+    return qrCodeData;
   } catch (error) {
-    console.error('Error generating or uploading QR code:', error);
+    console.error('Error generating QR code:', error);
     return null;
   }
 }
@@ -137,11 +134,11 @@ async function googleAuth() {
         const displayName = user.displayName || 'Anonymous';
         const email = user.email;
 
-        // Generate QR code and get the URL
-        const qrCodeImageUrl = await generateQRCode(uid);
+        // Generate QR code data
+        const qrCodeData = await generateQRCode(uid);
 
         // Insert user into Supabase table
-        await insertUserProfile(uid, displayName, email, qrCodeImageUrl);
+        await insertUserProfile(uid, displayName, email, qrCodeData);
       }
     } catch (error) {
       console.error('Google Authentication Error:', error);
@@ -171,11 +168,11 @@ async function facebookAuth() {
         const displayName = user.displayName || 'Anonymous';
         const email = user.email;
 
-        // Generate QR code and get the URL
-        const qrCodeImageUrl = await generateQRCode(uid);
+        // Generate QR code data
+        const qrCodeData = await generateQRCode(uid);
 
         // Insert user into Supabase table
-        await insertUserProfile(uid, displayName, email, qrCodeImageUrl);
+        await insertUserProfile(uid, displayName, email, qrCodeData);
       }
     } else {
       console.log('Facebook Login Cancelled');
@@ -207,11 +204,11 @@ async function appleAuth() {
         const displayName = user.displayName || 'Anonymous';
         const email = user.email;
 
-        // Generate QR code and get the URL
-        const qrCodeImageUrl = await generateQRCode(uid);
+        // Generate QR code data
+        const qrCodeData = await generateQRCode(uid);
 
         // Insert user into Supabase table
-        await insertUserProfile(uid, displayName, email, qrCodeImageUrl);
+        await insertUserProfile(uid, displayName, email, qrCodeData);
       }
     }
   } catch (error) {
@@ -219,11 +216,11 @@ async function appleAuth() {
   }
 }
 
-async function insertUserProfile(uid, username, email, qrCodeImageUrl) {
+async function insertUserProfile(uid, username, email, qrCodeData) {
   const { data, error } = await supabase
     .from('users')
     .insert([
-      { uid, username, email, phone_number: null, occupation: null, linkedin_url: null, instagram_handle: null, github_repo: null, website_link: null, qr_code_image_url: qrCodeImageUrl }
+      { uid, username, email, phone_number: null, occupation: null, linkedin_url: null, instagram_handle: null, github_repo: null, website_link: null, qr_code_image_url: qrCodeData }
     ]);
 
   if (error) {
