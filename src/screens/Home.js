@@ -42,6 +42,15 @@ export default function home()
               }}
             />
             <Tab.Screen
+              name="Connections"
+              component={Connections}
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="person" size={size} color={color} />
+                ),
+              }}
+            />
+            <Tab.Screen
               name="Profile"
               component={ProfileScreen}
               options={{
