@@ -1,45 +1,43 @@
-// LoginScreen.js
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import * as Google from 'expo-auth-session/providers/google';
-import { firebase } from './firebaseConfig';
+import { firebase } from '../firebaseConfig';
 import * as Facebook from 'expo-facebook';
 import { supabase } from './supabaseClient';
 import * as AppleAuthentication from 'expo-apple-authentication';
+import QRCode from 'qrcode'; // Add QRCode library
+import { uploadImageToSupabase } from './uploadImage'; // Custom utility function for image upload
 
 // Import image from assets
-
 import logoImage from '../assets/logo.jpg';
-
 
 const LoginScreen = () => {
   return (
     <View style={styles.container}>
       {/* Top Image */}
       <Image 
-  source={logoImage} 
-  style={styles.topImage}
-  onError={(error) => console.log('Image failed to load', error)}
-/>
-
+        source={logoImage} 
+        style={styles.topImage}
+        onError={(error) => console.log('Image failed to load', error)}
+      />
 
       {/* Button Container */}
       <View style={styles.buttonContainer}>
         {/* Google Button */}
-        <TouchableOpacity onPress={googleAuth()} style={[styles.button, styles.googleButton]}>
+        <TouchableOpacity onPress={googleAuth} style={[styles.button, styles.googleButton]}>
           <FontAwesome name="google" size={24} color="white" style={styles.icon} />
           <Text style={styles.buttonText}>Login with Google</Text>
         </TouchableOpacity>
 
         {/* Apple Button */}
-        <TouchableOpacity onPress={appleAuth()} style={[styles.button, styles.appleButton]}>
+        <TouchableOpacity onPress={appleAuth} style={[styles.button, styles.appleButton]}>
           <FontAwesome name="apple" size={24} color="white" style={styles.icon} />
           <Text style={styles.buttonText}>Login with Apple</Text>
         </TouchableOpacity>
 
         {/* Facebook Button */}
-        <TouchableOpacity onPress={facebookAuth()} style={[styles.button, styles.facebookButton]}>
+        <TouchableOpacity onPress={facebookAuth} style={[styles.button, styles.facebookButton]}>
           <FontAwesome name="facebook" size={24} color="white" style={styles.icon} />
           <Text style={styles.buttonText}>Login with Facebook</Text>
         </TouchableOpacity>
@@ -106,7 +104,22 @@ const styles = StyleSheet.create({
   },
 });
 
+// QR code generation and image upload
+async function generateQRCode(uid) {
+  try {
+    const qrCodeData = `https://yourapp.com/user/${uid}`;
+    const qrCodeUrl = await QRCode.toDataURL(qrCodeData);
 
+    // Upload QR code to Supabase Storage and return URL
+    const imageUrl = await uploadImageToSupabase(`qr_codes/${uid}.png`, qrCodeUrl);
+    return imageUrl;
+  } catch (error) {
+    console.error('Error generating or uploading QR code:', error);
+    return null;
+  }
+}
+
+// Authentication functions
 async function googleAuth() {
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     clientId: '454383910396-aerl2qatep2afv4pgqp74m0ne0e94eph.apps.googleusercontent.com',
@@ -119,17 +132,17 @@ async function googleAuth() {
       const result = await firebase.auth().signInWithCredential(credential);
       const user = result.user;
 
-      if(user)
-      {
-        // Retrieve user information
+      if (user) {
         const uid = user.uid;
-        const displayName = user.displayName || 'Anonymous'; // Display name may be null
+        const displayName = user.displayName || 'Anonymous';
         const email = user.email;
 
+        // Generate QR code and get the URL
+        const qrCodeImageUrl = await generateQRCode(uid);
+
         // Insert user into Supabase table
-        await insertUserProfile(uid, displayName, email);
+        await insertUserProfile(uid, displayName, email, qrCodeImageUrl);
       }
-      
     } catch (error) {
       console.error('Google Authentication Error:', error);
     }
@@ -137,7 +150,6 @@ async function googleAuth() {
     await promptAsync();
   }
 }
-
 
 async function facebookAuth() {
   try {
@@ -151,8 +163,20 @@ async function facebookAuth() {
 
     if (result.type === 'success') {
       const credential = firebase.auth.FacebookAuthProvider.credential(result.token);
-      await firebase.auth().signInWithCredential(credential);
-      console.log('User successfully signed in with Facebook');
+      const result = await firebase.auth().signInWithCredential(credential);
+      const user = result.user;
+
+      if (user) {
+        const uid = user.uid;
+        const displayName = user.displayName || 'Anonymous';
+        const email = user.email;
+
+        // Generate QR code and get the URL
+        const qrCodeImageUrl = await generateQRCode(uid);
+
+        // Insert user into Supabase table
+        await insertUserProfile(uid, displayName, email, qrCodeImageUrl);
+      }
     } else {
       console.log('Facebook Login Cancelled');
     }
@@ -160,7 +184,6 @@ async function facebookAuth() {
     console.error('Facebook Authentication Error:', message);
   }
 }
-
 
 async function appleAuth() {
   try {
@@ -176,19 +199,31 @@ async function appleAuth() {
         credential.identityToken,
         credential.authorizationCode
       );
-      await firebase.auth().signInWithCredential(providerCredential);
-      console.log('User successfully signed in with Apple');
+      const result = await firebase.auth().signInWithCredential(providerCredential);
+      const user = result.user;
+
+      if (user) {
+        const uid = user.uid;
+        const displayName = user.displayName || 'Anonymous';
+        const email = user.email;
+
+        // Generate QR code and get the URL
+        const qrCodeImageUrl = await generateQRCode(uid);
+
+        // Insert user into Supabase table
+        await insertUserProfile(uid, displayName, email, qrCodeImageUrl);
+      }
     }
   } catch (error) {
     console.error('Apple Authentication Error:', error);
   }
 }
 
-async function insertUserProfile(uid, username, email) {
+async function insertUserProfile(uid, username, email, qrCodeImageUrl) {
   const { data, error } = await supabase
     .from('users')
     .insert([
-      { uid, username, email, phone_number: null, occupation: null, linkedin_url: null, instagram_handle: null, github_repo: null, website_link: null, qr_code_image_url: null }
+      { uid, username, email, phone_number: null, occupation: null, linkedin_url: null, instagram_handle: null, github_repo: null, website_link: null, qr_code_image_url: qrCodeImageUrl }
     ]);
 
   if (error) {
@@ -197,6 +232,5 @@ async function insertUserProfile(uid, username, email) {
     console.log('User profile created:', data);
   }
 }
-
 
 export default LoginScreen;
