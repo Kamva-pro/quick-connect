@@ -8,6 +8,8 @@ import { Ionicons } from "@expo/vector-icons";
 import {ProfileScreen} from './ProfileScreen';
 import {Dashboard} from "./Dashboard";
 import {Qr} from "./QrScreen";
+import {Nearby} from "./NearbyScreen";
+
 
 
 const Tab = createBottomTabNavigator();
@@ -31,7 +33,7 @@ export default function home()
             />
             <Tab.Screen
               name="QR"
-              component={SettingsScreen}
+              component={Qr}
               options={{
                 tabBarIcon: ({ color, size }) => (
                   <FontAwesome name="cog" size={size} color={color} />
