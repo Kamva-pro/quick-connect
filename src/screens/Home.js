@@ -3,8 +3,12 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+
+//import screens
 import {ProfileScreen} from './ProfileScreen';
 import {Dashboard} from "./Dashboard";
+import {Qr} from "./QrScreen";
+
 
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +30,7 @@ export default function home()
               }}
             />
             <Tab.Screen
-              name="Settings"
+              name="QR"
               component={SettingsScreen}
               options={{
                 tabBarIcon: ({ color, size }) => (
