@@ -37,7 +37,7 @@ export default function home()
               component={Nearby}
               options={{
                 tabBarIcon: ({ color, size }) => (
-                  <FontAwesome name="loc" size={size} color={color} />
+                  <FontAwesome name="navigate" size={size} color={color} />
                 ),
               }}
             />
@@ -46,7 +46,7 @@ export default function home()
               component={Connections}
               options={{
                 tabBarIcon: ({ color, size }) => (
-                  <Ionicons name="person" size={size} color={color} />
+                  <Ionicons name="people" size={size} color={color} />
                 ),
               }}
             />
