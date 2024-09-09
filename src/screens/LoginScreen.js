@@ -9,7 +9,7 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 
 // Import image from assets
 
-import logoImage from '../assets/bg.jpg';
+import logoImage from '../assets/logo.jpg';
 
 
 const LoginScreen = () => {
@@ -52,11 +52,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'start',
+    height: "100%",
+    width: "100%",
   },
   topImage: {
-    width: '100%',        // Full width
-    height: '100%',        // Covers top half vertically
+    width: "200px",
     resizeMode: 'contain',  // Covers the image properly
   },
   buttonContainer: {
