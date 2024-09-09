@@ -6,8 +6,8 @@ import { firebase } from '../firebaseConfig';
 import * as Facebook from 'expo-facebook';
 import { supabase } from '../supabaseClient';
 import * as AppleAuthentication from 'expo-apple-authentication';
-import QRCode from 'react-native-qrcode-svg'; // Updated QR Code library
-import { uploadImageToSupabase } from './uploadImage'; // Custom utility function for image upload
+// import QRCode from 'react-native-qrcode-svg'; // Updated QR Code library
+// import { uploadImageToSupabase } from './uploadImage'; // Custom utility function for image upload
 
 // Import image from assets
 import logoImage from '../assets/logo.jpg';
