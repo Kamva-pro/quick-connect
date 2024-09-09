@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import * as Google from 'expo-auth-session/providers/google';
-import { firebase } from '../firebaseConfig';
+import { firebaseCon } from '../firebaseConfig';
 import * as Facebook from 'expo-facebook';
 import { supabase } from '../supabaseClient';
 import * as AppleAuthentication from 'expo-apple-authentication';
