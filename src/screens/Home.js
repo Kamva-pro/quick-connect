@@ -9,6 +9,7 @@ import {ProfileScreen} from './ProfileScreen';
 import {Dashboard} from "./Dashboard";
 import {Qr} from "./QrScreen";
 import {Nearby} from "./NearbyScreen";
+import {Connections} from "./Connections";
 
 
 
@@ -32,11 +33,11 @@ export default function home()
               }}
             />
             <Tab.Screen
-              name="QR"
-              component={Qr}
+              name="Nearby Connections"
+              component={Nearby}
               options={{
                 tabBarIcon: ({ color, size }) => (
-                  <FontAwesome name="cog" size={size} color={color} />
+                  <FontAwesome name="loc" size={size} color={color} />
                 ),
               }}
             />
