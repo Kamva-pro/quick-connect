@@ -1,5 +1,5 @@
 export default Connections = () => {
     return(
-        <Text>Nearby Screen</Text>
+        <Text>Connections Screen</Text>
     )
 }
