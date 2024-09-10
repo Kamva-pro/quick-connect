@@ -28,7 +28,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.genuineapps.quick-connect"
@@ -37,7 +37,18 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-facebook"
+      "expo-facebook",["react-native-fbsdk-next",
+      {
+        "appID": "48127127xxxxxxxx",
+        "clientToken": "c5078631e4065b60d7544a95xxxxxxxx",
+        "displayName": "RN SDK Demo",
+        "scheme": "fb48127127xxxxxxxx",
+        "advertiserIDCollectionEnabled": false,
+        "autoLogAppEventsEnabled": false,
+        "isAutoInitEnabled": true,
+        "iosUserTrackingPermission": "This identifier will be used to deliver personalized ads to you."
+      }
+    ]
     ],
     "extra": {
       "eas": {
