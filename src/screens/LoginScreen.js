@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import * as Google from 'expo-auth-session/providers/google';
-import { firebaseCon } from '../firebaseConfig';
+import app from '../firebaseConfig'
 import * as Facebook from 'expo-facebook';
 import { supabase } from '../supabaseClient';
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -134,11 +134,14 @@ async function googleAuth() {
         const displayName = user.displayName || 'Anonymous';
         const email = user.email;
 
-        // Generate QR code data
-        const qrCodeData = await generateQRCode(uid);
+        console.log("logged in successfully");
+        console.log("Username: ", displayName, "/nUserID:", uid, "/nEmail:", email)
 
-        // Insert user into Supabase table
-        await insertUserProfile(uid, displayName, email, qrCodeData);
+        // // Generate QR code data
+        // const qrCodeData = await generateQRCode(uid);
+
+        // // Insert user into Supabase table
+        // await insertUserProfile(uid, displayName, email, qrCodeData);
       }
     } catch (error) {
       console.error('Google Authentication Error:', error);
@@ -151,7 +154,7 @@ async function googleAuth() {
 async function facebookAuth() {
   try {
     await Facebook.initializeAsync({
-      appId: 'YOUR_FACEBOOK_APP_ID',
+      appId: '262071873250156',
     });
 
     const result = await Facebook.logInWithReadPermissionsAsync({
@@ -168,11 +171,14 @@ async function facebookAuth() {
         const displayName = user.displayName || 'Anonymous';
         const email = user.email;
 
-        // Generate QR code data
-        const qrCodeData = await generateQRCode(uid);
+        console.log("logged in successfully");
+        console.log("Username: ", displayName, "/nUserID:", uid, "/nEmail:", email)
 
-        // Insert user into Supabase table
-        await insertUserProfile(uid, displayName, email, qrCodeData);
+        // // Generate QR code data
+        // const qrCodeData = await generateQRCode(uid);
+
+        // // Insert user into Supabase table
+        // await insertUserProfile(uid, displayName, email, qrCodeData);
       }
     } else {
       console.log('Facebook Login Cancelled');
@@ -204,17 +210,18 @@ async function appleAuth() {
         const displayName = user.displayName || 'Anonymous';
         const email = user.email;
 
-        // Generate QR code data
-        const qrCodeData = await generateQRCode(uid);
+        // // Generate QR code data
+        // const qrCodeData = await generateQRCode(uid);
 
-        // Insert user into Supabase table
-        await insertUserProfile(uid, displayName, email, qrCodeData);
+        // // Insert user into Supabase table
+        // await insertUserProfile(uid, displayName, email, qrCodeData);
       }
     }
   } catch (error) {
     console.error('Apple Authentication Error:', error);
   }
 }
+
 
 async function insertUserProfile(uid, username, email, qrCodeData) {
   const { data, error } = await supabase

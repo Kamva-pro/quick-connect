@@ -39,14 +39,9 @@
     "plugins": [
       "expo-facebook",["react-native-fbsdk-next",
       {
-        "appID": "48127127xxxxxxxx",
-        "clientToken": "c5078631e4065b60d7544a95xxxxxxxx",
-        "displayName": "RN SDK Demo",
-        "scheme": "fb48127127xxxxxxxx",
-        "advertiserIDCollectionEnabled": false,
-        "autoLogAppEventsEnabled": false,
-        "isAutoInitEnabled": true,
-        "iosUserTrackingPermission": "This identifier will be used to deliver personalized ads to you."
+        "appID": "262071873250156",
+        "clientToken": "54df80dd43ef36801423c50f53a7ca83",
+        "displayName": "Quick-Connect-App"
       }
     ]
     ],
