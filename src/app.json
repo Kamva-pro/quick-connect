@@ -37,13 +37,7 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-facebook",["react-native-fbsdk-next",
-      {
-        "appID": "262071873250156",
-        "clientToken": "54df80dd43ef36801423c50f53a7ca83",
-        "displayName": "Quick-Connect-App"
-      }
-    ]
+      "@react-native-google-signin/google-signin"
     ],
     "extra": {
       "eas": {
