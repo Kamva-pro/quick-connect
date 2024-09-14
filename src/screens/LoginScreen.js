@@ -1,13 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import * as Google from 'expo-auth-session/providers/google';
-import app from '../firebaseConfig'
-import * as Facebook from 'expo-facebook';
-import { supabase } from '../supabaseClient';
-import * as AppleAuthentication from 'expo-apple-authentication';
-// import QRCode from 'react-native-qrcode-svg'; // Updated QR Code library
-// import { uploadImageToSupabase } from './uploadImage'; // Custom utility function for image upload
+
 
 // Import image from assets
 import logoImage from '../assets/logo.png';
@@ -25,19 +19,19 @@ const LoginScreen = () => {
       {/* Button Container */}
       <View style={styles.buttonContainer}>
         {/* Google Button */}
-        <TouchableOpacity onPress={googleAuth} style={[styles.button, styles.googleButton]}>
+        <TouchableOpacity style={[styles.button, styles.googleButton]}>
           <FontAwesome name="google" size={24} color="white" style={styles.icon} />
           <Text style={styles.buttonText}>Login with Google</Text>
         </TouchableOpacity>
 
         {/* Apple Button */}
-        <TouchableOpacity onPress={appleAuth} style={[styles.button, styles.appleButton]}>
+        <TouchableOpacity style={[styles.button, styles.appleButton]}>
           <FontAwesome name="apple" size={24} color="white" style={styles.icon} />
           <Text style={styles.buttonText}>Login with Apple</Text>
         </TouchableOpacity>
 
         {/* Facebook Button */}
-        <TouchableOpacity onPress={facebookAuth} style={[styles.button, styles.facebookButton]}>
+        <TouchableOpacity  style={[styles.button, styles.facebookButton]}>
           <FontAwesome name="facebook" size={24} color="white" style={styles.icon} />
           <Text style={styles.buttonText}>Login with Facebook</Text>
         </TouchableOpacity>
@@ -51,29 +45,33 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'start',
+    justifyContent: 'center',
     height: "100%",
     width: "100%",
   },
   topImage: {
-    width: 200,
-    resizeMode: 'contain',  // Covers the image properly
+
+    width: 250,
+    height: 250,
+    resizeMode: 'cover',  // Covers the image properly
   },
   buttonContainer: {
-    position: 'absolute', // Overlaps the image
-    top: '40%',           // Moves it slightly above the image
-    width: '85%',         // Controls the width of the div
+    
+        // Controls the width of the div
     backgroundColor: 'white',
     borderRadius: 20,     // Rounds the top of the div
-    padding: 20,
+    padding: 40,
     boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Adds box shadow
     elevation: 5,         // Shadow for Android
     alignItems: 'center',
     justifyContent: 'center',
   },
   button: {
-    width: '90%',
-    padding: 15,
+    maxWidth: "100%",
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingStart: 20,
+    paddingEnd: 20,
     borderRadius: 25,     // Rounded buttons
     flexDirection: 'row', // Align icon and text in a row
     alignItems: 'center', // Vertically centers content

@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import LoginScreen from './screens/LoginScreen'; 
 import Home from './screens/Home';
 // import "\firebaseConfig";
-import app from './firebaseConfig'
 
 export default function App() {
   return (
