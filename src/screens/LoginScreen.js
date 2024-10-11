@@ -31,10 +31,16 @@ const LoginScreen = () => {
         </TouchableOpacity>
 
         {/* Facebook Button */}
-        <TouchableOpacity  style={[styles.button, styles.facebookButton]}>
+        {/* <TouchableOpacity  style={[styles.button, styles.facebookButton]}>
           <FontAwesome name="facebook" size={24} color="white" style={styles.icon} />
           <Text style={styles.buttonText}>Login with Facebook</Text>
+        </TouchableOpacity> */}
+
+        <TouchableOpacity  style={[styles.button]} >
+          <FontAwesome name="facebook" size={24} color="white" style={styles.icon} />
+          <Text style={styles.buttonTextDark}>Login with Email Instead</Text>
         </TouchableOpacity>
+
       </View>
     </View>
   );
@@ -82,6 +88,12 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
+  buttonTextDark: {
+    color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
   },
