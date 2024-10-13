@@ -37,10 +37,15 @@ const LoginScreen = () => {
         </TouchableOpacity> */}
 
         <TouchableOpacity  style={[styles.button]} >
-          <FontAwesome name="facebook" size={24} color="white" style={styles.icon} />
+          <FontAwesome name="email" size={24} color="white" style={styles.icon} />
           <Text style={styles.buttonTextDark}>Login with Email Instead</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity>
+          <Text>
+            Create Account
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
