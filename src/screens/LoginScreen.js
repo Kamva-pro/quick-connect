@@ -30,11 +30,6 @@ const LoginScreen = () => {
           <Text style={styles.buttonText}>Login with Apple</Text>
         </TouchableOpacity>
 
-        {/* Facebook Button */}
-        {/* <TouchableOpacity  style={[styles.button, styles.facebookButton]}>
-          <FontAwesome name="facebook" size={24} color="white" style={styles.icon} />
-          <Text style={styles.buttonText}>Login with Facebook</Text>
-        </TouchableOpacity> */}
 
         <TouchableOpacity  style={[styles.button]} >
           <FontAwesome name="email" size={24} color="white" style={styles.icon} />
