@@ -1,7 +1,8 @@
-import React from "react";
-import { Alert, StyleSheet, View, AppState } from 'react-native'
+import React, {useState, useEffect} from "react";
+import { Alert, StyleSheet, View, AppState, Text, ScrollView, TextInput } from 'react-native'
 import { Button, Input } from '@rneui/themed'
 import logoImage from '../assets/logo.png';
+import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut} from "firebaseAuth"
 
 export default function CreateAccount() 
 {
