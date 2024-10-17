@@ -1,63 +1,76 @@
-// screens/SignUpScreen.js
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Alert } from 'react-native';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase'; // Import Firebase auth
+import { supabase } from './supabase';  // Supabase config
+import { auth } from '../firebase';  // Firebase config
 
-const SignUpScreen = ({ navigation }) => {
+export default function SignUpScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [username, setUsername] = useState('');
+  const [occupation, setOccupation] = useState('');
+  const [headline, setHeadline] = useState('');
 
   const handleSignUp = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      alert("User registered successfully!");
-      navigation.navigate('Login');  // Navigate back to Login after signup
+      // Step 1: Sign up the user in Firebase
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Step 2: Insert user data into Supabase after Firebase registration
+      const { data, error } = await supabase
+        .from('users')
+        .insert([
+          {
+            id: user.uid,  // Firebase user ID as primary key
+            email: user.email,
+            username,
+            occupation,
+            headline,
+          },
+        ]);
+
+      if (error) {
+        console.error('Supabase Error:', error);
+        Alert.alert('Error', 'There was an error saving your data.');
+      } else {
+        Alert.alert('Success', 'Your account has been created successfully.');
+      }
     } catch (error) {
-      setErrorMessage(error.message);
+      console.error('Firebase Error:', error.message);
+      Alert.alert('Error', error.message);
     }
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <TextInput
         placeholder="Email"
         value={email}
         onChangeText={(text) => setEmail(text)}
-        style={styles.input}
-        keyboardType="email-address"
       />
       <TextInput
         placeholder="Password"
+        secureTextEntry
         value={password}
         onChangeText={(text) => setPassword(text)}
-        style={styles.input}
-        secureTextEntry
       />
-      {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
+      <TextInput
+        placeholder="Username"
+        value={username}
+        onChangeText={(text) => setUsername(text)}
+      />
+      <TextInput
+        placeholder="Occupation"
+        value={occupation}
+        onChangeText={(text) => setOccupation(text)}
+      />
+      <TextInput
+        placeholder="Headline"
+        value={headline}
+        onChangeText={(text) => setHeadline(text)}
+      />
       <Button title="Sign Up" onPress={handleSignUp} />
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 16,
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
-  },
-  errorText: {
-    color: 'red',
-    marginBottom: 12,
-  },
-});
-
-export default SignUpScreen;
+}
