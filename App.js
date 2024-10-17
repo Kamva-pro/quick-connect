@@ -1,19 +1,31 @@
-// App.js
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from './components/LoginScreen';
-import SignUpScreen from './components/SignupScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import SignupScreen from './components/SignupScreen';
+import LoginScreen from './components/LoginScreen'; 
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
-export default function App() {
+const linking = {
+  prefixes: ['quickconnect://'], // Define your app's URL scheme
+  config: {
+    screens: {
+      Signup: 'signup',
+      Login: 'login',
+      Profile: 'profile/:userId', // Define a dynamic route for the profile
+    },
+  },
+};
+
+const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+    <NavigationContainer linking={linking}>
+      <Stack.Navigator initialRouteName="Signup">
+        <Stack.Screen name="Signup" component={SignupScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
+
+export default App;
