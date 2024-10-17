@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text } from 'react-native';
 import { supabase } from '../supabase'; // Import the Supabase client
-import { auth } from '../firebase'; // Import auth from firebase.js (assuming firebase.js is correctly configured)
+import { auth } from '../firebase'; // Import auth from firebase.js
 import { createUserWithEmailAndPassword } from 'firebase/auth'; // Firebase function for user registration
 
 const SignupScreen = () => {
@@ -10,7 +10,7 @@ const SignupScreen = () => {
   const [username, setUsername] = useState('');
   const [occupation, setOccupation] = useState('');
   const [headline, setHeadline] = useState('');
-  
+
   const [message, setMessage] = useState(''); // State to display messages
   const [error, setError] = useState(''); // State to display error messages
 
@@ -18,31 +18,45 @@ const SignupScreen = () => {
   const handleSignup = async () => {
     setMessage('');
     setError('');
-    
+
     try {
       // Step 1: Create User in Supabase
-      const { data, error } = await supabase
+      const { data: user, error: supabaseError } = await supabase
         .from('users')
         .insert([
-          { 
-            username: username,
-            occupation: occupation,
-            headline: headline,
-            email: email
+          {
+            username,
+            occupation,
+            headline,
+            email,
             // leaving other fields blank for now
           }
         ]);
 
-      if (error) {
-        throw error; // Trigger catch block for failed Supabase insert
+      if (supabaseError) {
+        throw supabaseError; // Trigger catch block for failed Supabase insert
       }
-      
+
       // Show success message for Supabase
       setMessage('User created in Supabase successfully!');
 
+      // Generate QR code link based on user ID (using timestamp as unique ID)
+      const userId = `${Date.now()}`; // Replace with a more reliable unique ID method if necessary
+      const generatedQrCodeLink = `quickconnect://profile/${userId}`;
+
       // Step 2: Register User in Firebase Authentication
       await createUserWithEmailAndPassword(auth, email, password);
-      
+
+      // Update Supabase with QR code link after user is created
+      const { error: updateError } = await supabase
+        .from('users')
+        .update({ qr_code_link: generatedQrCodeLink })
+        .eq('email', email); // Make sure to use a reliable unique identifier
+
+      if (updateError) {
+        throw updateError;
+      }
+
       // Show success message for Firebase
       setMessage('User registered in Firebase successfully!');
 

@@ -11,23 +11,42 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "ios": {
-      "supportsTablet": true,
-      "infoPlist": {
-        "NSAppTransportSecurity": {
-          "NSAllowsArbitraryLoads": true
+    
+      "ios": {
+        "supportsTablet": true,
+        "infoPlist": {
+          "NSAppTransportSecurity": {
+            "NSAllowsArbitraryLoads": true
+          },
+          "CFBundleURLTypes": [
+            {
+              "CFBundleURLSchemes": [
+                "quickconnect" 
+              ]
+            }
+          ]
         }
+      },
+      "android": {
+        "adaptiveIcon": {
+          "foregroundImage": "./assets/adaptive-icon.png",
+          "backgroundColor": "#ffffff"
+        },
+        "permissions": ["ACCESS_NETWORK_STATE", "INTERNET"],
+        "intentFilters": [ 
+          {
+            "action": "android.intent.action.VIEW",
+            "category": ["android.intent.category.DEFAULT", "android.intent.category.BROWSABLE"],
+            "data": {
+              "scheme": "quickconnect" 
+            }
+          }
+        ]
       }
     },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "permissions": ["ACCESS_NETWORK_STATE", "INTERNET"]
-    },
+    
     "web": {
       "favicon": "./assets/favicon.png"
     }
   }
-}
+
