@@ -1,76 +1,107 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Alert } from 'react-native';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { supabase } from '../supabase';  // Supabase config
-import { auth } from '../firebase';  // Firebase config
+import { View, TextInput, TouchableOpacity, Text } from 'react-native';
+import { supabase } from './supabaseClient'; // Import the Supabase client
+import { auth } from './firebase'; // Import auth from firebase.js (assuming firebase.js is correctly configured)
+import { createUserWithEmailAndPassword } from 'firebase/auth'; // Firebase function for user registration
 
-export default function SignUpScreen() {
+const SignupScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [occupation, setOccupation] = useState('');
   const [headline, setHeadline] = useState('');
+  
+  const [message, setMessage] = useState(''); // State to display messages
+  const [error, setError] = useState(''); // State to display error messages
 
-  const handleSignUp = async () => {
+  // Function to handle signup
+  const handleSignup = async () => {
+    setMessage('');
+    setError('');
+    
     try {
-      // Step 1: Sign up the user in Firebase
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      // Step 2: Insert user data into Supabase after Firebase registration
+      // Step 1: Create User in Supabase
       const { data, error } = await supabase
         .from('users')
         .insert([
-          {
-            id: user.uid,  // Firebase user ID as primary key
-            email: user.email,
-            username,
-            occupation,
-            headline,
-          },
+          { 
+            username: username,
+            occupation: occupation,
+            headline: headline,
+            email: email
+            // leaving other fields blank for now
+          }
         ]);
 
       if (error) {
-        console.error('Supabase Error:', error);
-        Alert.alert('Error', 'There was an error saving your data.');
-      } else {
-        Alert.alert('Success', 'Your account has been created successfully.');
+        throw error; // Trigger catch block for failed Supabase insert
       }
+      
+      // Show success message for Supabase
+      setMessage('User created in Supabase successfully!');
+
+      // Step 2: Register User in Firebase Authentication
+      await createUserWithEmailAndPassword(auth, email, password);
+      
+      // Show success message for Firebase
+      setMessage('User registered in Firebase successfully!');
+
     } catch (error) {
-      console.error('Firebase Error:', error.message);
-      Alert.alert('Error', error.message);
+      // Show error message if anything fails
+      setError(error.message);
     }
   };
 
   return (
-    <View>
-      <TextInput
-        placeholder="Email"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-      />
-      <TextInput
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-      />
+    <View style={{ padding: 20 }}>
       <TextInput
         placeholder="Username"
         value={username}
-        onChangeText={(text) => setUsername(text)}
+        onChangeText={setUsername}
+        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
       />
       <TextInput
         placeholder="Occupation"
         value={occupation}
-        onChangeText={(text) => setOccupation(text)}
+        onChangeText={setOccupation}
+        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
       />
       <TextInput
         placeholder="Headline"
         value={headline}
-        onChangeText={(text) => setHeadline(text)}
+        onChangeText={setHeadline}
+        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
       />
-      <Button title="Sign Up" onPress={handleSignUp} />
+      <TextInput
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+      />
+      <TextInput
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        style={{ marginBottom: 20, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+      />
+      
+      <TouchableOpacity onPress={handleSignup} style={{ backgroundColor: 'blue', padding: 12, borderRadius: 5 }}>
+        <Text style={{ textAlign: 'center', color: 'white' }}>
+          Signup
+        </Text>
+      </TouchableOpacity>
+
+      {/* Display message or error */}
+      {message ? (
+        <Text style={{ marginTop: 20, color: 'green', textAlign: 'center' }}>{message}</Text>
+      ) : null}
+      {error ? (
+        <Text style={{ marginTop: 20, color: 'red', textAlign: 'center' }}>{error}</Text>
+      ) : null}
     </View>
   );
-}
+};
+
+export default SignupScreen;
