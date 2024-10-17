@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text } from 'react-native';
-import { supabase } from './supabaseClient'; // Import the Supabase client
-import { auth } from './firebase'; // Import auth from firebase.js (assuming firebase.js is correctly configured)
+import { supabase } from '../supabase'; // Import the Supabase client
+import { auth } from '../firebase'; // Import auth from firebase.js (assuming firebase.js is correctly configured)
 import { createUserWithEmailAndPassword } from 'firebase/auth'; // Firebase function for user registration
 
 const SignupScreen = () => {
