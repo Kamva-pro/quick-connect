@@ -3,6 +3,8 @@ import { View, TextInput, TouchableOpacity, Text } from 'react-native';
 import { supabase } from '../supabase'; // Import the Supabase client
 import { auth } from '../firebase'; // Import auth from firebase.js
 import { createUserWithEmailAndPassword } from 'firebase/auth'; // Firebase function for user registration
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+
 
 const SignupScreen = () => {
   const [email, setEmail] = useState('');
@@ -13,6 +15,8 @@ const SignupScreen = () => {
   
   const [message, setMessage] = useState(''); // State to display messages
   const [error, setError] = useState(''); // State to display error messages
+
+  const navigation = useNavigation(); // Initialize navigation
 
   // Function to handle signup
   const handleSignup = async () => {
@@ -60,6 +64,9 @@ const SignupScreen = () => {
 
       // Show success message for Supabase
       setMessage(prev => prev + ' User created in Supabase successfully!');
+
+      navigation.navigate('EditProfileScreen'); 
+
 
     } catch (err) {
       // Show error message if anything fails
