@@ -1,6 +1,6 @@
 // screens/LoginScreen.js
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase'; // Import Firebase auth
 
@@ -37,7 +37,10 @@ const LoginScreen = ({ navigation }) => {
       />
       {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
       <Button title="Login" onPress={handleLogin} />
-      <Button title="Go to Sign Up" onPress={() => navigation.navigate('SignUp')} />
+      <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+        <Text style={styles.signupText}>Go to Sign Up</Text>
+      </TouchableOpacity>
+
     </View>
   );
 };
@@ -59,6 +62,11 @@ const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 12,
   },
+  signupText:{
+    color: "blue",
+    marginTop: 12,
+    textAlign: 'center'
+  }
 });
 
 export default LoginScreen;
