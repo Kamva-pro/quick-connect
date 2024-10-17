@@ -10,7 +10,7 @@ const SignupScreen = () => {
   const [username, setUsername] = useState('');
   const [occupation, setOccupation] = useState('');
   const [headline, setHeadline] = useState('');
-
+  
   const [message, setMessage] = useState(''); // State to display messages
   const [error, setError] = useState(''); // State to display error messages
 
@@ -18,51 +18,52 @@ const SignupScreen = () => {
   const handleSignup = async () => {
     setMessage('');
     setError('');
-
+    
     try {
       // Step 1: Create User in Supabase
-      const { data: user, error: supabaseError } = await supabase
+      const { data, error: supabaseError } = await supabase
         .from('users')
         .insert([
-          {
+          { 
             username,
             occupation,
             headline,
             email,
-            // leaving other fields blank for now
+            // Generate QR code link using a placeholder for now, will update later
+            qr_code_link: '' 
           }
-        ]);
+        ])
+        .select(); // Select to get the inserted data back
 
       if (supabaseError) {
         throw supabaseError; // Trigger catch block for failed Supabase insert
       }
 
-      // Show success message for Supabase
-      setMessage('User created in Supabase successfully!');
-
-      // Generate QR code link based on user ID (using timestamp as unique ID)
-      const userId = `${Date.now()}`; // Replace with a more reliable unique ID method if necessary
-      const generatedQrCodeLink = `quickconnect://profile/${userId}`;
-
-      // Step 2: Register User in Firebase Authentication
-      await createUserWithEmailAndPassword(auth, email, password);
-
-      // Update Supabase with QR code link after user is created
+      // Step 2: Generate the QR code link using the user's ID
+      const qrCodeLink = `quickconnect://profile/${data[0].id}`;
+      
+      // Step 3: Update the user's QR code link in Supabase
       const { error: updateError } = await supabase
         .from('users')
-        .update({ qr_code_link: generatedQrCodeLink })
-        .eq('email', email); // Make sure to use a reliable unique identifier
+        .update({ qr_code_link: qrCodeLink })
+        .eq('id', data[0].id); // Update based on the generated ID
 
       if (updateError) {
-        throw updateError;
+        throw updateError; // Handle update error
       }
 
+      // Step 4: Register User in Firebase Authentication
+      await createUserWithEmailAndPassword(auth, email, password);
+      
       // Show success message for Firebase
       setMessage('User registered in Firebase successfully!');
 
-    } catch (error) {
+      // Show success message for Supabase
+      setMessage(prev => prev + ' User created in Supabase successfully!');
+
+    } catch (err) {
       // Show error message if anything fails
-      setError(error.message);
+      setError(err.message);
     }
   };
 
@@ -100,7 +101,7 @@ const SignupScreen = () => {
         secureTextEntry
         style={{ marginBottom: 20, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
       />
-      
+
       <TouchableOpacity onPress={handleSignup} style={{ backgroundColor: 'blue', padding: 12, borderRadius: 5 }}>
         <Text style={{ textAlign: 'center', color: 'white' }}>
           Signup
