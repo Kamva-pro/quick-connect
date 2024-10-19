@@ -4,9 +4,22 @@ import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity, Image } fr
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase'; // Import Firebase auth
 import { supabase } from '../supabase';
+import { useNavigation } from '@react-navigation/native';
 
 
 const LoginScreen = ({ navigation }) => {
+  // Check if the user is already logged in
+  useEffect(() => {
+    const checkAuth = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        // Redirect to HomePage if the user is already authenticated
+        navigation.navigate('Home');
+      }
+    };
+
+    checkAuth();
+  }, []);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');

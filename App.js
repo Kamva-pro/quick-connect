@@ -7,6 +7,7 @@ import UserProfileScreen from './components/ProfileScreen';
 import EditProfileScreen from './components/EditProfileScreen';
 import QRCodeScreen from './components/QRCodeScreen'; 
 
+
 const Stack = createNativeStackNavigator();
 
 const linking = {
@@ -18,6 +19,7 @@ const linking = {
       Profile: 'profile/:userId', // Define a dynamic route for the profile
       EditProfile: 'edit-profile',
       QRCode: 'qr-code',
+      Home: 'home'
     },
   },
 };
