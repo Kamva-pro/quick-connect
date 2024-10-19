@@ -15,12 +15,12 @@ const QRCodeScreen = () => {
         .from('users')
         .select('qr_code_link')
         .eq('id', userId)
-        .single(); // Fetch the single user by ID
+        .single(); 
 
       if (error) {
         console.error('Error fetching user data:', error);
       } else {
-        setQRCodeLink(data.qr_code_link); // Set the QR code link
+        setQRCodeLink(data.qr_code_link); 
       }
     };
 
@@ -29,12 +29,14 @@ const QRCodeScreen = () => {
 
   return (
     <View style={{ padding: 20, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Your QR Code:</Text>
       {qrCodeLink ? (
-        <QRCode value={qrCodeLink} size={200} />
+        <QRCode value={qrCodeLink} size={250} />
+
       ) : (
         <Text>Loading QR code...</Text>
       )}
+              <Text style={{fontSize: 38}}>Scan Me!</Text>
+
     </View>
   );
 };

@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase'; // Import Firebase auth
+import { supabase } from '../supabase';
+
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -11,13 +13,25 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      alert("Login successful!");
-      // You can navigate to the home screen after login if you have one
+      // Firebase authentication login
+     await signInWithEmailAndPassword(auth, email, password);
+
+      // Find the user's ID from Supabase
+      const { data, error: supabaseError } = await supabase
+        .from('users')
+        .select('id')
+        .eq('email', email)
+        .single(); // Fetch single user based on email
+
+      if (supabaseError) {
+        throw supabaseError;
+      }
+
+      // Redirect to QR Code Screen with userId
       navigation.navigate('QRCode', { userId: data.id });
 
-    } catch (error) {
-      setErrorMessage(error.message);
+    } catch (err) {
+      setErrorMessage(err.message);
     }
   };
 
@@ -41,7 +55,7 @@ const LoginScreen = ({ navigation }) => {
       />
       {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
       <Button title="Login" onPress={handleLogin} />
-      <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
         <Text style={styles.signupText}>Go to Sign Up</Text>
       </TouchableOpacity>
 
