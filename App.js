@@ -25,9 +25,9 @@ const linking = {
 const App = () => {
   return (
     <NavigationContainer linking={linking}>
-      <Stack.Navigator initialRouteName="Signup">
+      <Stack.Navigator initialRouteName="Login">
+      <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Profile" component={UserProfileScreen}/>
         <Stack.Screen name="EditProfile" component={EditProfileScreen} /> 
         <Stack.Screen name="QRCode" component={QRCodeScreen} /> 
