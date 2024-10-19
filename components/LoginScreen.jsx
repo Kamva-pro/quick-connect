@@ -14,6 +14,8 @@ const LoginScreen = ({ navigation }) => {
       await signInWithEmailAndPassword(auth, email, password);
       alert("Login successful!");
       // You can navigate to the home screen after login if you have one
+      navigation.navigate('QRCode', { userId: data.id });
+
     } catch (error) {
       setErrorMessage(error.message);
     }
