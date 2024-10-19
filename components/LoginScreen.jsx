@@ -1,6 +1,6 @@
 // screens/LoginScreen.js
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase'; // Import Firebase auth
 
@@ -21,6 +21,8 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      {/* <Image>
+      </Image> */}
       <TextInput
         placeholder="Email"
         value={email}

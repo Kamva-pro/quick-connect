@@ -65,7 +65,8 @@ const SignupScreen = () => {
       // Show success message for Supabase
       setMessage(prev => prev + ' User created in Supabase successfully!');
 
-      navigation.navigate('EditProfileScreen'); 
+      // navigation.navigate('EditProfile', { userId: data[0].id });
+      navigation.navigate("LoginScreen") 
 
 
     } catch (err) {
@@ -76,6 +77,7 @@ const SignupScreen = () => {
 
   return (
     <View style={{ padding: 20 }}>
+      
       <TextInput
         placeholder="Username"
         value={username}

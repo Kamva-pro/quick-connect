@@ -19,6 +19,7 @@
     "expo-status-bar": "~1.12.1",
     "firebase": "^10.14.1",
     "qrcode": "^1.5.4",
+    "quick-connect-app": "file:",
     "react": "18.2.0",
     "react-native": "0.74.5",
     "react-native-dotenv": "^3.4.11",

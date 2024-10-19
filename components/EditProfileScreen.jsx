@@ -2,8 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text } from 'react-native';
 import { supabase } from '../supabase'; // Import the Supabase client
 import { auth } from '../firebase'; // Import auth from firebase.js
+import { useNavigation, useRoute } from '@react-navigation/native';
+
 
 const EditProfileScreen = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { userId } = route.params;
   const [username, setUsername] = useState('');
   const [occupation, setOccupation] = useState('');
   const [headline, setHeadline] = useState('');
