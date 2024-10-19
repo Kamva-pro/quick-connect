@@ -6,6 +6,7 @@ import LoginScreen from './components/LoginScreen';
 import UserProfileScreen from './components/ProfileScreen';
 import EditProfileScreen from './components/EditProfileScreen';
 import QRCodeScreen from './components/QRCodeScreen'; 
+import HomePage from './components/HomePage';
 
 
 const Stack = createNativeStackNavigator();
@@ -30,9 +31,8 @@ const App = () => {
       <Stack.Navigator initialRouteName="Login">
       <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
-        <Stack.Screen name="Profile" component={UserProfileScreen}/>
-        <Stack.Screen name="EditProfile" component={EditProfileScreen} /> 
-        <Stack.Screen name="QRCode" component={QRCodeScreen} /> 
+        <Stack.Screen name="HomePage" component={HomePage} /> 
+
       </Stack.Navigator>
     </NavigationContainer>
   );
