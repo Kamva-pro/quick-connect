@@ -5,6 +5,7 @@ import SignupScreen from './components/SignupScreen';
 import LoginScreen from './components/LoginScreen'; 
 import UserProfileScreen from './components/ProfileScreen';
 import EditProfileScreen from './components/EditProfileScreen';
+import QRCodeScreen from './components/QRCodeScreen'; 
 
 const Stack = createNativeStackNavigator();
 
@@ -15,7 +16,8 @@ const linking = {
       Signup: 'signup',
       Login: 'login',
       Profile: 'profile/:userId', // Define a dynamic route for the profile
-      EditProfile: 'edit-profile'
+      EditProfile: 'edit-profile',
+      QRCode: 'qr-code',
     },
   },
 };
@@ -28,6 +30,7 @@ const App = () => {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Profile" component={UserProfileScreen}/>
         <Stack.Screen name="EditProfile" component={EditProfileScreen} /> 
+        <Stack.Screen name="QRCode" component={QRCodeScreen} /> 
       </Stack.Navigator>
     </NavigationContainer>
   );
