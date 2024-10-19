@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { BottomNavigation } from 'react-native-paper';
 import QRCodeScreen from './QRCodeScreen';
 import EditProfileScreen from './EditProfileScreen';
-
+import ProfileScreen from './ProfileScreen'
+import HomeScreen from './HomeScreen';
 
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -24,19 +24,19 @@ const HomePage = () => {
             <MaterialCommunityIcons name="home" color={color} size={26}/>
         ),
     }}/>
-      <Tab.Screen name="Search" component={SearchScreen}        // Search Screen
+      <Tab.Screen name="Search" component={QRCodeScreen}        // Search Screen
       options={{
         tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="magnify" color={color} size={26}/>
         ),
     }}/>
-      <Tab.Screen name="Notification" component={NotificationScreen}      // Notification Screen
+      <Tab.Screen name="Notification" component={ProfileScreen}      // Notification Screen
       options={{
         tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="heart" color={color} size={26}/>
         ),
     }}/>
-      <Tab.Screen name="Profile" component={ProfileScreen}            // Profile Screen
+      <Tab.Screen name="Profile" component={EditProfileScreen}            // Profile Screen
       options={{
         tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account-circle" color={color} size={26}/>
