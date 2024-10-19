@@ -1,5 +1,5 @@
 // screens/LoginScreen.js
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase'; // Import Firebase auth
@@ -41,7 +41,7 @@ const LoginScreen = ({ navigation }) => {
       }
 
       // Redirect to QR Code Screen with userId
-      navigation.navigate('QRCode', { userId: data.id });
+      navigation.navigate('Home');
 
     } catch (err) {
       setErrorMessage(err.message);

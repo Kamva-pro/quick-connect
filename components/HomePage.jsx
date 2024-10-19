@@ -4,33 +4,46 @@ import { BottomNavigation } from 'react-native-paper';
 import QRCodeScreen from './QRCodeScreen';
 import EditProfileScreen from './EditProfileScreen';
 
-const HomeRoute = () => <View><Text>Home Content</Text></View>;
-const EmptyTab = () => <View><Text>Empty Tab</Text></View>;
+
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import  MaterialCommunityIcons  from 'react-native-vector-icons/MaterialCommunityIcons';
+
+
+
+const Tab = createMaterialBottomTabNavigator();
 
 const HomePage = () => {
-  const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    { key: 'home', title: 'Home', icon: 'home' },
-    { key: 'qr', title: 'QR Code', icon: 'qrcode' },
-    { key: 'special', title: 'Action', icon: 'plus-circle' }, // Special Action Button
-    { key: 'empty', title: '', icon: 'circle-outline' }, // Empty Tab
-    { key: 'profile', title: 'Edit Profile', icon: 'account-edit' },
-  ]);
-
-  const renderScene = BottomNavigation.SceneMap({
-    home: HomeRoute,
-    qr: QRCodeScreen,
-    special: () => <View><Text>Special Action</Text></View>, // Handle special tab action here
-    empty: EmptyTab,
-    profile: EditProfileScreen,
-  });
 
   return (
-    <BottomNavigation
-      navigationState={{ index, routes }}
-      onIndexChange={setIndex}
-      renderScene={renderScene}
-    />
+    <NavigationContainer>
+    <Tab.Navigator labeled={false} barStyle={{ backgroundColor: 'black' }} activeColor="white" >
+      <Tab.Screen name="Home" component={HomeScreen}            
+      options={{
+        tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={26}/>
+        ),
+    }}/>
+      <Tab.Screen name="Search" component={SearchScreen}        // Search Screen
+      options={{
+        tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="magnify" color={color} size={26}/>
+        ),
+    }}/>
+      <Tab.Screen name="Notification" component={NotificationScreen}      // Notification Screen
+      options={{
+        tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="heart" color={color} size={26}/>
+        ),
+    }}/>
+      <Tab.Screen name="Profile" component={ProfileScreen}            // Profile Screen
+      options={{
+        tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account-circle" color={color} size={26}/>
+        ),
+    }}/>
+    </Tab.Navigator>
+    </NavigationContainer>
   );
 };
 
