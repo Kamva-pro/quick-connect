@@ -1,49 +1,50 @@
-import React, { useState } from 'react';
-import { View, Text } from 'react-native';
-import QRCodeScreen from './QRCodeScreen';
-import EditProfileScreen from './EditProfileScreen';
-import ProfileScreen from './ProfileScreen'
-import HomeScreen from './HomeScreen';
-
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import  MaterialCommunityIcons  from 'react-native-vector-icons/MaterialCommunityIcons';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import HomeScreen from './HomeScreen';
+import QRCodeScreen from './QRCodeScreen';
+import ProfileScreen from './ProfileScreen';
+import EditProfileScreen from './EditProfileScreen';
 
 
 const Tab = createMaterialBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const HomePage = () => {
-
   return (
-    <NavigationContainer>
-    <Tab.Navigator labeled={false} barStyle={{ backgroundColor: 'black' }} activeColor="white" >
-      <Tab.Screen name="Home" component={HomeScreen}            
-      options={{
-        tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26}/>
-        ),
-    }}/>
-      <Tab.Screen name="Search" component={QRCodeScreen}        // Search Screen
-      options={{
-        tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="magnify" color={color} size={26}/>
-        ),
-    }}/>
-      <Tab.Screen name="Notification" component={ProfileScreen}      // Notification Screen
-      options={{
-        tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="heart" color={color} size={26}/>
-        ),
-    }}/>
-      <Tab.Screen name="Profile" component={EditProfileScreen}            // Profile Screen
-      options={{
-        tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account-circle" color={color} size={26}/>
-        ),
-    }}/>
+    <Tab.Navigator labeled={true} barStyle={{ backgroundColor: 'black' }} activeColor="white">
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home" color={color} size={26} />,
+        }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={QRCodeScreen}
+        options={{
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="magnify" color={color} size={26} />,
+        }}
+      />
+      <Tab.Screen
+        name="Notification"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="heart" color={color} size={26} />,
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={EditProfileScreen}
+        options={{
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="account-circle" color={color} size={26} />,
+        }}
+      />
     </Tab.Navigator>
-    </NavigationContainer>
   );
 };
 

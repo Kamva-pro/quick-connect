@@ -7,7 +7,7 @@ import { useRoute } from '@react-navigation/native';
 const QRCodeScreen = () => {
   const [qrCodeLink, setQRCodeLink] = useState('');
   const route = useRoute();
-  const { userId } = route.params; // Assuming userId is passed upon login
+  const { userId } = route.params;
 
   useEffect(() => {
     const fetchUser = async () => {
