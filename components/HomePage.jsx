@@ -8,14 +8,21 @@ import HomeScreen from './HomeScreen';
 import QRCodeScreen from './QRCodeScreen';
 import ProfileScreen from './ProfileScreen';
 import EditProfileScreen from './EditProfileScreen';
+import { supabase } from '../supabase';
+import { auth } from '../firebase'; 
 
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const HomePage = () => {
+
+  const getCurrentUserId = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    return user?.id;
+  }
   return (
-    <Tab.Navigator labeled={true} barStyle={{ backgroundColor: 'black' }} activeColor="white">
+    <Tab.Navigator labeled={true} barStyle={{ backgroundColor: 'white' }} activeColor="black">
       <Tab.Screen
         name="Home"
         component={HomeScreen}
@@ -24,12 +31,30 @@ const HomePage = () => {
         }}
       />
       <Tab.Screen
-        name="Search"
-        component={QRCodeScreen}
-        options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="magnify" color={color} size={26} />,
-        }}
-      />
+  name="QRCode"
+  component={QRCodeScreen}
+  options={{
+    tabBarIcon: ({ color }) => <MaterialCommunityIcons name="qrcode-scan" color={color} size={26} />, // Updated icon
+  }}
+  listeners={({ navigation, route }) => ({
+    tabPress: async (e) => {
+      // Prevent default behavior
+      e.preventDefault();
+
+      // Fetch the current userId from Supabase using email
+      const userId = await getCurrentUserId();
+
+      if (userId) {
+        // Update the QRCodeScreen params with the userId
+        navigation.setParams({ userId });
+      } else {
+        console.log('User not logged in or ID not found');
+      }
+    },
+  })}
+/>
+
+
       <Tab.Screen
         name="Notification"
         component={ProfileScreen}
