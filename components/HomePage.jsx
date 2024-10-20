@@ -15,12 +15,23 @@ import { auth } from '../firebase';
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+const email = auth.currentUser.email
 const HomePage = () => {
 
-  const getCurrentUserId = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    return user?.id;
-  }
+  const getSupabaseUserIdByEmail = async (email) => {
+    const { data, error } = await supabase
+      .from('users') // Replace 'users' with your table name if different
+      .select('uid') // Select the uid column
+      .eq('email', email) // Use the email to filter
+      .single(); // Expecting a single result
+  
+    if (error) {
+      console.error('Error fetching user ID from Supabase:', error);
+      return null;
+    }
+  
+    return data?.uid;
+  };
   return (
     <Tab.Navigator labeled={true} barStyle={{ backgroundColor: 'white' }} activeColor="black">
       <Tab.Screen
@@ -40,9 +51,6 @@ const HomePage = () => {
     tabPress: async (e) => {
       // Prevent default behavior
       e.preventDefault();
-
-      // Fetch the current userId from Supabase using email
-      const userId = await getCurrentUserId();
 
       if (userId) {
         // Update the QRCodeScreen params with the userId
