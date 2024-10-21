@@ -14,74 +14,49 @@ import { auth } from '../firebase';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+const userId = null
 
-const getCurrentUserEmail = async () => {
-  const currentUser = auth().currentUser;
-  if (currentUser) {
-    return currentUser.email; // Return the Firebase user email
-  } else {
-    console.log('No user is currently logged in');
-    return null;
+  const user = auth.currentUser; // Get the currently authenticated user
+
+  if (user) {
+    // Fetch the user record from Supabase to get the user ID
+    const { data: userData, error: fetchError } = await supabase
+      .from('users')
+      .select('id') 
+      .eq('email', user.email)
+      .single();
+
+    if (fetchError) throw fetchError; // Handle fetching error
+
+    userId = userData.id;
   }
-};
+  else{
+    navigation.navigate('Login');
+  }
+
+
 const HomePage = () => {
 
-  const getSupabaseUserIdByEmail = async (email) => {
-    const { data, error } = await supabase
-      .from('users') // Replace 'users' with your table name if different
-      .select('uid') // Select the uid column
-      .eq('email', email) // Use the email to filter
-      .single(); // Expecting a single result
-  
-    if (error) {
-      console.error('Error fetching user ID from Supabase:', error);
-      return null;
-    }
-  
-    return data?.uid;
-  };
   return (
     <Tab.Navigator labeled={true} barStyle={{ backgroundColor: 'white' }} activeColor="black">
       <Tab.Screen
-        name="Home"
+        name="HomeScreen"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home" color={color} size={26} />,
         }}
       />
+
      <Tab.Screen
-  name="QRCode"
-  component={QRCodeScreen}
-  options={{
-    tabBarIcon: ({ color }) => (
-      <MaterialCommunityIcons name="qrcode-scan" color={color} size={26} />
-    ), // QR code icon
-  }}
-  listeners={({ navigation }) => ({
-    tabPress: async (e) => {
-      // Prevent default behavior
-      e.preventDefault();
-
-      // Get the current Firebase user email
-
-      if (email) {
-        // Fetch the Supabase user ID using the email
-        const userId = await getSupabaseUserIdByEmail(email);
-
-        if (userId) {
-          // Pass the Supabase uid to QRCodeScreen
-          navigation.setParams({ userId });
-        } else {
-          console.log('No Supabase user ID found for this email');
-        }
-      } else {
-        console.log('No Firebase email found');
-      }
-    },
-  })}
-/>
-
-
+        name="QRCode"
+        component={QRCodeScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="qrcode-scan" color={color} size={26} />
+          ), 
+        }}
+        initialParams={userId}
+      />
 
       <Tab.Screen
         name="Notification"
