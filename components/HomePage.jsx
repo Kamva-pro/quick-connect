@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -11,34 +11,46 @@ import EditProfileScreen from './EditProfileScreen';
 import { supabase } from '../supabase';
 import { auth } from '../firebase'; 
 
-
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-const userId = null
 
-  const user = auth.currentUser; // Get the currently authenticated user
-
-  if (user) {
-    // Fetch the user record from Supabase to get the user ID
-    const { data: userData, error: fetchError } = await supabase
-      .from('users')
-      .select('id') 
-      .eq('email', user.email)
-      .single();
-
-    if (fetchError) throw fetchError; // Handle fetching error
-
-    userId = userData.id;
-  }
-  else{
-    navigation.navigate('Login');
-  }
-
-
-const HomePage = () => {
+const HomePage = ({ navigation }) => {
+  const [userId, setUserId] = useState(null); // State to store userId
+  useEffect(() => {
+    const fetchAndSetUserId = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const { data: userData, error } = await supabase
+          .from('users')
+          .select('id')
+          .eq('email', user.email)
+          .single();
+  
+        if (error) {
+          console.error('Error fetching user data:', error);
+          return;
+        }
+  
+        setUserId(userData.id); // Ensure `setUserId` is called properly
+      }
+    };
+  
+    fetchAndSetUserId();
+  }, []);
 
   return (
-    <Tab.Navigator labeled={true} barStyle={{ backgroundColor: 'white' }} activeColor="black">
+    <Tab.Navigator 
+      screenOptions={{
+        tabBarActiveTintColor: 'black', // Set the active tab text/icon color
+        tabBarInactiveTintColor: 'gray', // Optional: set the inactive tab color
+        tabBarStyle: {
+          backgroundColor: 'white', // Set the background color of the tab bar
+        },
+      }}
+      labeled={true} 
+      barStyle={{ backgroundColor: 'white' }} 
+      activeColor="black"
+    >
       <Tab.Screen
         name="HomeScreen"
         component={HomeScreen}
@@ -47,7 +59,7 @@ const HomePage = () => {
         }}
       />
 
-     <Tab.Screen
+      <Tab.Screen
         name="QRCode"
         component={QRCodeScreen}
         options={{
@@ -55,7 +67,7 @@ const HomePage = () => {
             <MaterialCommunityIcons name="qrcode-scan" color={color} size={26} />
           ), 
         }}
-        initialParams={userId}
+        initialParams={{ userId }} // Pass userId as initial params
       />
 
       <Tab.Screen
@@ -65,6 +77,7 @@ const HomePage = () => {
           tabBarIcon: ({ color }) => <MaterialCommunityIcons name="heart" color={color} size={26} />,
         }}
       />
+
       <Tab.Screen
         name="Profile"
         component={EditProfileScreen}
