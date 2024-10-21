@@ -15,28 +15,7 @@ const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const HomePage = ({ navigation }) => {
-  const [userId, setUserId] = useState(null); // State to store userId
-  useEffect(() => {
-    const fetchAndSetUserId = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        const { data: userData, error } = await supabase
-          .from('users')
-          .select('id')
-          .eq('email', user.email)
-          .single();
   
-        if (error) {
-          console.error('Error fetching user data:', error);
-          return;
-        }
-  
-        setUserId(userData.id); // Ensure `setUserId` is called properly
-      }
-    };
-  
-    fetchAndSetUserId();
-  }, []);
 
   return (
     <Tab.Navigator 
@@ -67,7 +46,6 @@ const HomePage = ({ navigation }) => {
             <MaterialCommunityIcons name="qrcode-scan" color={color} size={26} />
           ), 
         }}
-        initialParams={{ userId }} // Pass userId as initial params
       />
 
       <Tab.Screen
