@@ -10,6 +10,7 @@ import ProfileScreen from './ProfileScreen';
 import EditProfileScreen from './EditProfileScreen';
 import { supabase } from '../supabase';
 import { auth } from '../firebase'; 
+import Nearby from './NearbyConnections';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -31,7 +32,7 @@ const HomePage = ({ navigation }) => {
       activeColor="black"
     >
       <Tab.Screen
-        name="HomeScreen"
+        name="Home"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home" color={color} size={26} />,
@@ -49,10 +50,10 @@ const HomePage = ({ navigation }) => {
       />
 
       <Tab.Screen
-        name="Notification"
-        component={ProfileScreen}
+        name="Nearby"
+        component={Nearby}
         options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="heart" color={color} size={26} />,
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="location" color={color} size={26} />,
         }}
       />
 
