@@ -40,12 +40,13 @@ const HomePage = ({ navigation }) => {
       />
 
       <Tab.Screen
-        name="QRCode"
+        name="Scan"
         component={QRCodeScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="qrcode-scan" color={color} size={26} />
           ), 
+          headerTitle: "QRCode"
         }}
       />
 
@@ -53,7 +54,9 @@ const HomePage = ({ navigation }) => {
         name="Nearby"
         component={Nearby}
         options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="location" color={color} size={26} />,
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="map-marker" color={color} size={26} />,
+          headerTitle: "Nearby Connections"
+
         }}
       />
 
@@ -62,6 +65,8 @@ const HomePage = ({ navigation }) => {
         component={EditProfileScreen}
         options={{
           tabBarIcon: ({ color }) => <MaterialCommunityIcons name="account-circle" color={color} size={26} />,
+          headerTitle: "Edit Profile"
+
         }}
       />
     </Tab.Navigator>

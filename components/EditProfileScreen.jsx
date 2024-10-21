@@ -8,7 +8,6 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 const EditProfileScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { userId } = route.params;
   const [username, setUsername] = useState('');
   const [occupation, setOccupation] = useState('');
   const [headline, setHeadline] = useState('');
