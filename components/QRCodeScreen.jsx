@@ -13,8 +13,6 @@ const QRCodeScreen = ({navigation}) => {
   const [error, setError] = useState(null);
 
  
-
-  
   useEffect(() => {
     const fetchQrCodeLink = async () => {
       try {
@@ -74,7 +72,13 @@ const QRCodeScreen = ({navigation}) => {
         <Text>Scan</Text>
       </TouchableOpacity>
 
-      <FloatingAction onPressMain={navigation.navigate('Scan')} />
+      <FloatingAction 
+        onPressMain={() => {
+          console.log('Floating pressed');
+          navigation.navigate('Scan');
+        }} 
+      />
+
 
     </View>
     </View>

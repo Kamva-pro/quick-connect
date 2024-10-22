@@ -11,6 +11,7 @@ import EditProfileScreen from './EditProfileScreen';
 import { supabase } from '../supabase';
 import { auth } from '../firebase'; 
 import Nearby from './NearbyConnections';
+import Scan from './ScanScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -40,7 +41,7 @@ const HomePage = ({ navigation }) => {
       />
 
       <Tab.Screen
-        name="Scan"
+        name="QRCode"
         component={QRCodeScreen}
         options={{
           tabBarIcon: ({ color }) => (
@@ -59,6 +60,16 @@ const HomePage = ({ navigation }) => {
 
         }}
       />
+
+{/* <Tab.Screen
+        name="Scan"
+        component={Scan}
+        options={{
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="scan" color={color} size={26} />,
+          headerTitle: "Scan"
+
+        }}
+      /> */}
 
       <Tab.Screen
         name="Profile"
