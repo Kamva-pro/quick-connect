@@ -17,7 +17,8 @@ const linking = {
       Profile: 'profile/:userId', // Define a dynamic route for the profile
       EditProfile: 'edit-profile',
       QRCode: 'qr-code',
-      Home: 'home'
+      Home: 'home',
+      Scan: 'scan'
     },
   },
 };

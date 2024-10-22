@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import { supabase } from '../supabase'; // Adjust the path if needed
 import { auth } from '../firebase'; // Adjust the path if needed
 import QRCode from 'react-native-qrcode-svg'; // Import the QR code component
+import { FloatingAction } from "react-native-floating-action";
 
-const QRCodeScreen = () => {
+
+
+const QRCodeScreen = ({navigation}) => {
   const [qrCodeLink, setQrCodeLink] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+ 
+
+  
   useEffect(() => {
     const fetchQrCodeLink = async () => {
       try {
@@ -55,6 +61,8 @@ const QRCodeScreen = () => {
   }
 
   return (
+    <View style={styles.container}>
+      
     <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
       <QRCode
         value={qrCodeLink} // Use the fetched qr_code_link
@@ -66,8 +74,34 @@ const QRCodeScreen = () => {
         <Text>Scan</Text>
       </TouchableOpacity>
 
+      <FloatingAction onPressMain={navigation.navigate('Scan')} />
+
+    </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    margin: 64,
+  },
+  button: {
+    flex: 1,
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+});
 
 export default QRCodeScreen;
