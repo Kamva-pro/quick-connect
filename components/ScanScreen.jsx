@@ -50,8 +50,16 @@ const ScanScreen = ({ navigation }) => {
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
             style={StyleSheet.absoluteFillObject} // Full-screen scanner
           />
-          {/* Overlay with border frame */}
+          
+          {/* Overlay with dimmed areas and border frame */}
           <View style={styles.overlay}>
+            {/* Semi-transparent dimming outside the frame */}
+            <View style={styles.topDim} />
+            <View style={styles.leftDim} />
+            <View style={styles.rightDim} />
+            <View style={styles.bottomDim} />
+            
+            {/* The frame itself */}
             <View style={styles.frame} />
           </View>
         </View>
@@ -85,6 +93,38 @@ const styles = StyleSheet.create({
     borderWidth: 3, // Thickness of the border
     borderColor: 'white', // Color of the border
     borderRadius: 10, // Optional: rounded corners for the frame
+  },
+  topDim: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '35%',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent black
+  },
+  leftDim: {
+    position: 'absolute',
+    top: '35%',
+    left: 0,
+    width: '20%',
+    bottom: '35%',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent black
+  },
+  rightDim: {
+    position: 'absolute',
+    top: '35%',
+    right: 0,
+    width: '20%',
+    bottom: '35%',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent black
+  },
+  bottomDim: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: '35%',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent black
   },
 });
 
