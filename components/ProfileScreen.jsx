@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { supabase } from './supabase'; // Adjust the path to your supabase configuration
 
 const UserProfileScreen = ({ route }) => {
   const { userId } = route.params; // Retrieve the userId passed from the ScanScreen
@@ -9,9 +10,8 @@ const UserProfileScreen = ({ route }) => {
     // Fetch the user's profile data using the userId
     const fetchUserProfile = async () => {
       try {
-        // Replace this with your logic to fetch the user data
-        const response = await fetchUserProfileById(userId);
-        setUserData(response);
+        const user = await fetchUserProfileById(userId);
+        setUserData(user);
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
@@ -32,6 +32,21 @@ const UserProfileScreen = ({ route }) => {
       {/* Display other user profile information */}
     </View>
   );
+};
+
+const fetchUserProfileById = async (userId) => {
+  // Example with Supabase
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (error) {
+    throw new Error('Error fetching user profile');
+  }
+
+  return data;
 };
 
 const styles = StyleSheet.create({
