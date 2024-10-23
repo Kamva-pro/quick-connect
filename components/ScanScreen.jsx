@@ -45,10 +45,16 @@ const ScanScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeContainer}>
       {isFocused && (
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={StyleSheet.absoluteFillObject} // Full-screen scanner
-        />
+        <View style={styles.scannerContainer}>
+          <BarCodeScanner
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={StyleSheet.absoluteFillObject} // Full-screen scanner
+          />
+          {/* Overlay with border frame */}
+          <View style={styles.overlay}>
+            <View style={styles.frame} />
+          </View>
+        </View>
       )}
     </SafeAreaView>
   );
@@ -58,6 +64,27 @@ const styles = StyleSheet.create({
   safeContainer: {
     flex: 1,
     backgroundColor: 'black',
+  },
+  scannerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  frame: {
+    width: 250, // Adjust the size of the frame
+    height: 150, // Adjust the size of the frame
+    borderWidth: 3, // Thickness of the border
+    borderColor: 'white', // Color of the border
+    borderRadius: 10, // Optional: rounded corners for the frame
   },
 });
 
