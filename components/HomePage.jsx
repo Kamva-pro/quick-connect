@@ -33,7 +33,7 @@ const HomePage = ({ navigation }) => {
       activeColor="black"
     >
       <Tab.Screen
-        name="Home"
+        name="Connections"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home" color={color} size={26} />,
