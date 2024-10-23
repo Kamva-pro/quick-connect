@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { supabase } from '../supabase'; // Import the Supabase client
 import { auth } from '../firebase'; // Import auth from firebase.js
 import { useNavigation, useRoute } from '@react-navigation/native';
-
 
 const EditProfileScreen = () => {
   const navigation = useNavigation();
@@ -21,19 +20,35 @@ const EditProfileScreen = () => {
   const [twitter, setTwitter] = useState('');
   const [message, setMessage] = useState(''); // State to display messages
   const [error, setError] = useState(''); // State to display error messages
+  const [currentField, setCurrentField] = useState(0); // To track the current input field
+  
+  const totalFields = 10; // Total number of fields
+
+  // Array to keep track of input fields for navigation between them
+  const inputFields = [
+    { placeholder: 'Username', value: username, setter: setUsername },
+    { placeholder: 'Occupation', value: occupation, setter: setOccupation },
+    { placeholder: 'Headline', value: headline, setter: setHeadline },
+    { placeholder: 'Number', value: number, setter: setNumber },
+    { placeholder: 'Company', value: company, setter: setCompany },
+    { placeholder: 'Website', value: website, setter: setWebsite },
+    { placeholder: 'Facebook', value: facebook, setter: setFacebook },
+    { placeholder: 'Instagram', value: instagram, setter: setInstagram },
+    { placeholder: 'LinkedIn', value: linkedin, setter: setLinkedin },
+    { placeholder: 'Twitter', value: twitter, setter: setTwitter },
+  ];
 
   // Fetch user data from Supabase when the component mounts
   useEffect(() => {
     const fetchUserData = async () => {
-      const user = auth.currentUser; // Get the currently authenticated user
+      const user = auth.currentUser;
 
       if (user) {
-        // Fetch user data from Supabase using the Supabase user ID
         const { data, error } = await supabase
           .from('users')
           .select('*')
-          .eq('email', user.email) // Use email to find the user
-          .single(); // Fetch a single user record
+          .eq('email', user.email)
+          .single();
 
         if (error) {
           setError(error.message);
@@ -44,41 +59,38 @@ const EditProfileScreen = () => {
         setUsername(data.username);
         setOccupation(data.occupation);
         setHeadline(data.headline);
-        setEmail(data.email); // Email is not editable but can be displayed
-        setNumber(data.number || ''); // Set number, handle potential null
-        setCompany(data.company || ''); // Set company, handle potential null
-        setWebsite(data.website || ''); // Set website, handle potential null
-        setFacebook(data.facebook || ''); // Set facebook, handle potential null
-        setInstagram(data.instagram || ''); // Set instagram, handle potential null
-        setLinkedin(data.linkedin || ''); // Set linkedin, handle potential null
-        setTwitter(data.twitter || ''); // Set twitter, handle potential null
+        setEmail(data.email);
+        setNumber(data.number || '');
+        setCompany(data.company || '');
+        setWebsite(data.website || '');
+        setFacebook(data.facebook || '');
+        setInstagram(data.instagram || '');
+        setLinkedin(data.linkedin || '');
+        setTwitter(data.twitter || '');
       }
     };
 
     fetchUserData();
   }, []);
 
-  // Function to handle profile update
   const handleUpdateProfile = async () => {
     setMessage('');
     setError('');
 
     try {
-      const user = auth.currentUser; // Get the currently authenticated user
+      const user = auth.currentUser;
 
       if (user) {
-        // Fetch the user record from Supabase to get the user ID
         const { data: userData, error: fetchError } = await supabase
           .from('users')
-          .select('id') // Only select the ID
+          .select('id')
           .eq('email', user.email)
           .single();
 
-        if (fetchError) throw fetchError; // Handle fetching error
+        if (fetchError) throw fetchError;
 
-        const userId = userData.id; // Get the Supabase user ID
+        const userId = userData.id;
 
-        // Update user profile information in Supabase
         const { error } = await supabase
           .from('users')
           .update({
@@ -92,106 +104,60 @@ const EditProfileScreen = () => {
             instagram,
             linkedin,
             twitter,
-            // Do not update uid and qr_code_link
           })
-          .eq('id', userId); // Update based on the Supabase user ID
+          .eq('id', userId);
 
-        if (error) {
-          throw error; // Trigger catch block for failed update
-        }
+        if (error) throw error;
 
-        // Show success message
         setMessage('Profile updated successfully!');
       }
     } catch (err) {
-      // Show error message if anything fails
       setError(err.message);
     }
   };
 
+  const handleNext = () => {
+    if (currentField < totalFields - 1) {
+      setCurrentField(currentField + 1);
+    } else {
+      handleUpdateProfile(); // Submit the form if it's the last field
+    }
+  };
+
   return (
-    <View style={{ padding: 20 }}>
-      <TextInput
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
-      />
-      <TextInput
-        placeholder="Occupation"
-        value={occupation}
-        onChangeText={setOccupation}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
-      />
-      <TextInput
-        placeholder="Headline"
-        value={headline}
-        onChangeText={setHeadline}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
-      />
-      <TextInput
-        placeholder="Email"
-        value={email}
-        editable={false} // Email field should not be editable
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
-      />
-      <TextInput
-        placeholder="Number"
-        value={number}
-        onChangeText={setNumber}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
-      />
-      <TextInput
-        placeholder="Company"
-        value={company}
-        onChangeText={setCompany}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
-      />
-      <TextInput
-        placeholder="Website"
-        value={website}
-        onChangeText={setWebsite}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
-      />
-      <TextInput
-        placeholder="Facebook"
-        value={facebook}
-        onChangeText={setFacebook}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
-      />
-      <TextInput
-        placeholder="Instagram"
-        value={instagram}
-        onChangeText={setInstagram}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
-      />
-      <TextInput
-        placeholder="LinkedIn"
-        value={linkedin}
-        onChangeText={setLinkedin}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
-      />
-      <TextInput
-        placeholder="Twitter"
-        value={twitter}
-        onChangeText={setTwitter}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
-      />
-      
-      <TouchableOpacity onPress={handleUpdateProfile} style={{ backgroundColor: 'blue', padding: 12, borderRadius: 5 }}>
+    <ScrollView style={{ flex: 1, padding: 20 }}>
+      {inputFields.map((field, index) => (
+        <TextInput
+          key={index}
+          placeholder={field.placeholder}
+          value={field.value}
+          onChangeText={field.setter}
+          style={{
+            marginBottom: 10,
+            borderBottomWidth: 1,
+            borderColor: '#ccc',
+            padding: 8,
+          }}
+          editable={field.placeholder !== 'Email'} // Make email non-editable if needed
+          autoFocus={currentField === index} // Focus the current field
+        />
+      ))}
+
+      <TouchableOpacity
+        onPress={handleNext}
+        style={{ backgroundColor: 'blue', padding: 12, borderRadius: 5 }}>
         <Text style={{ textAlign: 'center', color: 'white' }}>
-          Save Changes
+          {currentField === totalFields - 1 ? 'Done' : 'Next'}
         </Text>
       </TouchableOpacity>
 
-      {/* Display message or error */}
       {message ? (
         <Text style={{ marginTop: 20, color: 'green', textAlign: 'center' }}>{message}</Text>
       ) : null}
       {error ? (
         <Text style={{ marginTop: 20, color: 'red', textAlign: 'center' }}>{error}</Text>
       ) : null}
-    </View>
+    </ScrollView>
   );
 };
 
