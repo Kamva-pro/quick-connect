@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, Alert } from 'react-native';
-import { Camera } from 'expo-camera';
+import { View, Text, StyleSheet, Alert, SafeAreaView } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -18,12 +17,21 @@ const ScanScreen = ({ navigation }) => {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true); // Stop scanning once a QR code is detected
-    Alert.alert("QR Code Scanned", `Data: ${data}`, [
-      { text: "OK", onPress: () => setScanned(false) } // Reset scanning state
-    ]);
 
-    // Do something with the scanned data, e.g., navigate or fetch info
-    // navigation.navigate('SomeScreen', { qrData: data });
+    // Example data: quickconnect://profile/12345 (extract the user ID)
+    const extractedUserId = data.split('/').pop(); // Extract the user ID from the link
+    
+    Alert.alert("QR Code Scanned", `User ID: ${extractedUserId}`, [
+      {
+        text: "Go to Profile",
+        onPress: () => {
+          // Navigate to the user's profile screen and pass the user ID
+          navigation.navigate('Profile', { userId: extractedUserId });
+          setScanned(false); // Reset scanning state after navigating
+        }
+      },
+      { text: "Cancel", onPress: () => setScanned(false), style: "cancel" }
+    ]);
   };
 
   if (hasPermission === null) {
@@ -35,33 +43,21 @@ const ScanScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.safeContainer}>
       {isFocused && (
         <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned} // Disable scanning after a QR code is detected
-          style={StyleSheet.absoluteFillObject} // Make sure it fills the screen
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          style={StyleSheet.absoluteFillObject} // Full-screen scanner
         />
       )}
-      <View style={styles.buttonContainer}>
-        {scanned && (
-          <Button title="Tap to Scan Again" onPress={() => setScanned(false)} />
-        )}
-        <Button title="Go Back" onPress={() => navigation.goBack()} />
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safeContainer: {
     flex: 1,
-    justifyContent: 'center',
-  },
-  buttonContainer: {
-    position: 'absolute',
-    bottom: 50,
-    width: '100%',
-    alignItems: 'center',
+    backgroundColor: 'black',
   },
 });
 

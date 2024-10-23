@@ -5,6 +5,7 @@ import SignupScreen from './components/SignupScreen';
 import HomePage from './components/HomePage';
 import LoginScreen from './components/LoginScreen';
 import Scan from './components/ScanScreen';
+import UserProfileScreen from './components/ProfileScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -32,6 +33,7 @@ const App = () => {
         <Stack.Screen name="Signup" component={SignupScreen} />
         <Stack.Screen name="Home" component={HomePage} options={{headerLeft: null}}/> 
         <Stack.Screen name="Scan" component={Scan}/> 
+        <Stack.Screen name="Profile" component={UserProfileScreen}/>
 
       </Stack.Navigator>
     </NavigationContainer>
