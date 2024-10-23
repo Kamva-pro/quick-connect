@@ -62,6 +62,7 @@ const HomePage = ({ navigation }) => {
         }}
       />
 
+      
       <Tab.Screen
         name="Profile"
         component={EditProfileScreen}
