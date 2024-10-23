@@ -1,69 +1,68 @@
-import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Button, Alert } from 'react-native';
+import { Camera } from 'expo-camera';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import { useIsFocused } from '@react-navigation/native';
 
-export default function Scan() {
-  // const [facing, setFacing] = useState<CameraType>('back');
-  const [permission, requestPermission] = useCameraPermissions();
+const ScanScreen = ({ navigation }) => {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+  const isFocused = useIsFocused();
 
-  if (!permission) {
-    // Camera permissions are still loading.
-    return <View />;
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
+
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true); // Stop scanning once a QR code is detected
+    Alert.alert("QR Code Scanned", `Data: ${data}`, [
+      { text: "OK", onPress: () => setScanned(false) } // Reset scanning state
+    ]);
+
+    // Do something with the scanned data, e.g., navigate or fetch info
+    // navigation.navigate('SomeScreen', { qrData: data });
+  };
+
+  if (hasPermission === null) {
+    return <View><Text>Requesting camera permission...</Text></View>;
   }
 
-  if (!permission.granted) {
-    // Camera permissions are not granted yet.
-    return (
-      <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
-      </View>
-    );
+  if (hasPermission === false) {
+    return <View><Text>No access to camera.</Text></View>;
   }
-
-  // function toggleCameraFacing() {
-  //   setFacing(current => (current === 'back' ? 'front' : 'back'));
-  // }
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} >
-        {/* <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
-        </View> */}
-      </CameraView>
+      {isFocused && (
+        <BarCodeScanner
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned} // Disable scanning after a QR code is detected
+          style={StyleSheet.absoluteFillObject} // Make sure it fills the screen
+        />
+      )}
+      <View style={styles.buttonContainer}>
+        {scanned && (
+          <Button title="Tap to Scan Again" onPress={() => setScanned(false)} />
+        )}
+        <Button title="Go Back" onPress={() => navigation.goBack()} />
+      </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
   },
-  message: {
-    textAlign: 'center',
-    paddingBottom: 10,
-  },
-  camera: {
-    flex: 1,
-  },
   buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    margin: 64,
-  },
-  button: {
-    flex: 1,
-    alignSelf: 'flex-end',
+    position: 'absolute',
+    bottom: 50,
+    width: '100%',
     alignItems: 'center',
   },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-  },
 });
+
+export default ScanScreen;

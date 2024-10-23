@@ -61,16 +61,6 @@ const HomePage = ({ navigation }) => {
         }}
       />
 
-{/* <Tab.Screen
-        name="Scan"
-        component={Scan}
-        options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="scan" color={color} size={26} />,
-          headerTitle: "Scan"
-
-        }}
-      /> */}
-
       <Tab.Screen
         name="Profile"
         component={EditProfileScreen}
