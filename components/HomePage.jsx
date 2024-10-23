@@ -12,6 +12,7 @@ import { supabase } from '../supabase';
 import { auth } from '../firebase'; 
 import Nearby from './NearbyConnections';
 import Scan from './ScanScreen';
+import Connections from './Connections';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -34,7 +35,7 @@ const HomePage = ({ navigation }) => {
     >
       <Tab.Screen
         name="Connections"
-        component={HomeScreen}
+        component={Connections}
         options={{
           tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home" color={color} size={26} />,
         }}
