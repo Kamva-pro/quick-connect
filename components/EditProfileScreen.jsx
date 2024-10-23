@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View, TextInput, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { supabase } from '../supabase'; // Import the Supabase client
 import { auth } from '../firebase'; // Import auth from firebase.js
@@ -18,44 +18,33 @@ const EditProfileScreen = () => {
   const [instagram, setInstagram] = useState('');
   const [linkedin, setLinkedin] = useState('');
   const [twitter, setTwitter] = useState('');
-  const [message, setMessage] = useState(''); // State to display messages
-  const [error, setError] = useState(''); // State to display error messages
-  const [currentField, setCurrentField] = useState(0); // To track the current input field
-  
-  const totalFields = 10; // Total number of fields
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
-  // Array to keep track of input fields for navigation between them
-  const inputFields = [
-    { placeholder: 'Username', value: username, setter: setUsername },
-    { placeholder: 'Occupation', value: occupation, setter: setOccupation },
-    { placeholder: 'Headline', value: headline, setter: setHeadline },
-    { placeholder: 'Number', value: number, setter: setNumber },
-    { placeholder: 'Company', value: company, setter: setCompany },
-    { placeholder: 'Website', value: website, setter: setWebsite },
-    { placeholder: 'Facebook', value: facebook, setter: setFacebook },
-    { placeholder: 'Instagram', value: instagram, setter: setInstagram },
-    { placeholder: 'LinkedIn', value: linkedin, setter: setLinkedin },
-    { placeholder: 'Twitter', value: twitter, setter: setTwitter },
-  ];
+  // Define refs for each input
+  const occupationRef = useRef();
+  const headlineRef = useRef();
+  const numberRef = useRef();
+  const companyRef = useRef();
+  const websiteRef = useRef();
+  const facebookRef = useRef();
+  const instagramRef = useRef();
+  const linkedinRef = useRef();
+  const twitterRef = useRef();
 
-  // Fetch user data from Supabase when the component mounts
   useEffect(() => {
     const fetchUserData = async () => {
       const user = auth.currentUser;
-
       if (user) {
         const { data, error } = await supabase
           .from('users')
           .select('*')
           .eq('email', user.email)
           .single();
-
         if (error) {
           setError(error.message);
           return;
         }
-
-        // Populate state with user data
         setUsername(data.username);
         setOccupation(data.occupation);
         setHeadline(data.headline);
@@ -69,28 +58,22 @@ const EditProfileScreen = () => {
         setTwitter(data.twitter || '');
       }
     };
-
     fetchUserData();
   }, []);
 
   const handleUpdateProfile = async () => {
     setMessage('');
     setError('');
-
     try {
       const user = auth.currentUser;
-
       if (user) {
         const { data: userData, error: fetchError } = await supabase
           .from('users')
           .select('id')
           .eq('email', user.email)
           .single();
-
         if (fetchError) throw fetchError;
-
         const userId = userData.id;
-
         const { error } = await supabase
           .from('users')
           .update({
@@ -106,9 +89,7 @@ const EditProfileScreen = () => {
             twitter,
           })
           .eq('id', userId);
-
         if (error) throw error;
-
         setMessage('Profile updated successfully!');
       }
     } catch (err) {
@@ -116,47 +97,111 @@ const EditProfileScreen = () => {
     }
   };
 
-  const handleNext = () => {
-    if (currentField < totalFields - 1) {
-      setCurrentField(currentField + 1);
-    } else {
-      handleUpdateProfile(); // Submit the form if it's the last field
-    }
-  };
-
   return (
-    <ScrollView style={{ flex: 1, padding: 20 }}>
-      {inputFields.map((field, index) => (
-        <TextInput
-          key={index}
-          placeholder={field.placeholder}
-          value={field.value}
-          onChangeText={field.setter}
-          style={{
-            marginBottom: 10,
-            borderBottomWidth: 1,
-            borderColor: '#ccc',
-            padding: 8,
-          }}
-          editable={field.placeholder !== 'Email'} // Make email non-editable if needed
-          autoFocus={currentField === index} // Focus the current field
-        />
-      ))}
+    <ScrollView contentContainerStyle={{ padding: 20 }} keyboardShouldPersistTaps="handled">
+      <TextInput
+        placeholder="Username"
+        value={username}
+        onChangeText={setUsername}
+        returnKeyType="next"
+        onSubmitEditing={() => occupationRef.current.focus()}
+        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+      />
+      <TextInput
+        ref={occupationRef}
+        placeholder="Occupation"
+        value={occupation}
+        onChangeText={setOccupation}
+        returnKeyType="next"
+        onSubmitEditing={() => headlineRef.current.focus()}
+        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+      />
+      <TextInput
+        ref={headlineRef}
+        placeholder="Headline"
+        value={headline}
+        onChangeText={setHeadline}
+        returnKeyType="next"
+        onSubmitEditing={() => numberRef.current.focus()}
+        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+      />
+      <TextInput
+        placeholder="Email"
+        value={email}
+        editable={false}
+        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+      />
+      <TextInput
+        ref={numberRef}
+        placeholder="Number"
+        value={number}
+        onChangeText={setNumber}
+        returnKeyType="next"
+        onSubmitEditing={() => companyRef.current.focus()}
+        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+      />
+      <TextInput
+        ref={companyRef}
+        placeholder="Company"
+        value={company}
+        onChangeText={setCompany}
+        returnKeyType="next"
+        onSubmitEditing={() => websiteRef.current.focus()}
+        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+      />
+      <TextInput
+        ref={websiteRef}
+        placeholder="Website"
+        value={website}
+        onChangeText={setWebsite}
+        returnKeyType="next"
+        onSubmitEditing={() => facebookRef.current.focus()}
+        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+      />
+      <TextInput
+        ref={facebookRef}
+        placeholder="Facebook"
+        value={facebook}
+        onChangeText={setFacebook}
+        returnKeyType="next"
+        onSubmitEditing={() => instagramRef.current.focus()}
+        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+      />
+      <TextInput
+        ref={instagramRef}
+        placeholder="Instagram"
+        value={instagram}
+        onChangeText={setInstagram}
+        returnKeyType="next"
+        onSubmitEditing={() => linkedinRef.current.focus()}
+        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+      />
+      <TextInput
+        ref={linkedinRef}
+        placeholder="LinkedIn"
+        value={linkedin}
+        onChangeText={setLinkedin}
+        returnKeyType="next"
+        onSubmitEditing={() => twitterRef.current.focus()}
+        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+      />
+      <TextInput
+        ref={twitterRef}
+        placeholder="Twitter"
+        value={twitter}
+        onChangeText={setTwitter}
+        returnKeyType="done"
+        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+      />
 
-      <TouchableOpacity
-        onPress={handleNext}
-        style={{ backgroundColor: 'blue', padding: 12, borderRadius: 5 }}>
+      <TouchableOpacity onPress={handleUpdateProfile} style={{ backgroundColor: 'blue', padding: 12, borderRadius: 5 }}>
         <Text style={{ textAlign: 'center', color: 'white' }}>
-          {currentField === totalFields - 1 ? 'Done' : 'Next'}
+          Save Changes
         </Text>
       </TouchableOpacity>
 
-      {message ? (
-        <Text style={{ marginTop: 20, color: 'green', textAlign: 'center' }}>{message}</Text>
-      ) : null}
-      {error ? (
-        <Text style={{ marginTop: 20, color: 'red', textAlign: 'center' }}>{error}</Text>
-      ) : null}
+      {message ? <Text style={{ marginTop: 20, color: 'green', textAlign: 'center' }}>{message}</Text> : null}
+      {error ? <Text style={{ marginTop: 20, color: 'red', textAlign: 'center' }}>{error}</Text> : null}
     </ScrollView>
   );
 };
