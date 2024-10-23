@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
   frame: {
     width: 250, // Adjust the size of the frame
     height: 150, // Adjust the size of the frame
-    borderWidth: 3, // Thickness of the border
-    borderColor: 'white', // Color of the border
+    // borderWidth: 3, // Thickness of the border
+    // borderColor: 'white', // Color of the border
     borderRadius: 10, // Optional: rounded corners for the frame
   },
   topDim: {
