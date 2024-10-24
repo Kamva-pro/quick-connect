@@ -74,14 +74,20 @@ const Nearby = () => {
               );
 
               return {
+                userId: userLoc.user_id, // Include userId to filter out current user
                 username: userData.username, // Username from the 'users' table
                 distance: Math.round(distance), // Distance in meters
               };
             })
           );
 
+          // Filter out the current user from the list
+          const usersWithoutCurrentUser = usersWithDistance.filter(
+            (user) => user.userId !== currentUser.uid
+          );
+
           // Sort users by distance (nearest first)
-          const sortedUsers = usersWithDistance.sort((a, b) => a.distance - b.distance);
+          const sortedUsers = usersWithoutCurrentUser.sort((a, b) => a.distance - b.distance);
 
           setNearbyUsers(sortedUsers);
         } catch (err) {
@@ -110,7 +116,7 @@ const Nearby = () => {
         <FlatList
           data={nearbyUsers}
           renderItem={renderUserCard}
-          keyExtractor={(item) => item.username}
+          keyExtractor={(item) => item.userId} // Use userId as the key
         />
       )}
     </View>
@@ -146,4 +152,3 @@ const styles = StyleSheet.create({
 });
 
 export default Nearby;
-s
