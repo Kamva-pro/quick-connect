@@ -33,7 +33,7 @@ const UserProfileScreen = ({ route }) => {
       <Text>Name: {userData.username}</Text>
       <Text>Email: {userData.email}</Text>
       <Text> {userData.headline}</Text>
-      <Button> Add connection </Button> 
+      <Button onPress={addConnection(current_userId, userId)}> Add connection </Button> 
       {/* Display other user profile information */}
     </View>
   );
