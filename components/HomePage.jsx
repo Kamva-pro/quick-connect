@@ -1,139 +1,136 @@
-
 import React, { useEffect, useState } from 'react';
-import { Platform, Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import * as Device from 'expo-device';
 import * as Location from 'expo-location';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { auth } from '../firebase'; // Import authentication from Firebase
-import { supabase } from '../supabase'; // Import Supabase client
-import Connections from './Connections';
+import { supabase } from '../supabase'; // Supabase client setup
+import { auth } from '../firebase'; // Firebase auth setup
+
+// Import your screens
 import QRCodeScreen from './QRCodeScreen';
-import Nearby from './NearbyConnections';
 import EditProfileScreen from './EditProfileScreen';
+import Connections from './Connections';
+import Nearby from './NearbyConnections'; // This will display users based on location
 
 const Tab = createMaterialBottomTabNavigator();
 
-const HomePage = () => {
+const HomePage = ({ navigation }) => {
+  const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
+  // Update location when homepage loads
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        console.log('User authenticated:', user.uid);
-        await retrieveAndStoreLocation(user.email); // Pass email to retrieve user ID
-      } else {
-        console.log('No user is signed in.');
-      }
-    });
-
-    return () => unsubscribe(); // Cleanup subscription on unmount
-  }, []);
-
-  const retrieveAndStoreLocation = async (userEmail) => {
-    try {
-      // Fetch the user record from Supabase to get the user ID
-      const { data: userData, error: fetchError } = await supabase
-        .from('users')
-        .select('id')
-        .eq('email', userEmail) // Match by email
-        .single(); // Ensure we get a single record
-
-      if (fetchError) {
-        throw fetchError;
-      }
-
-      const userId = userData.id; // Get the user ID
-
-      // Check if the device is a physical device
+    (async () => {
       if (Platform.OS === 'android' && !Device.isDevice) {
-        setErrorMsg('This will not work on an Android Emulator. Try it on your device!');
+        setErrorMsg('Oops, this will not work on an Android Emulator. Try it on a real device!');
         return;
       }
 
-      // Request location permissions
+      // Request permission to access location
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
         return;
       }
 
-      // Get the current location
-      let loc = await Location.getCurrentPositionAsync({});
-      console.log('Current Location:', loc);
+      // Get user's current location
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
 
-      // Save location data
-      // await saveLocationData({ userId, location: loc.coords });
-    } catch (error) {
-      console.error('Error retrieving location:', error);
-      Alert.alert('Error', 'Could not retrieve location. Please try again.');
-    }
-  };
+      // Get current authenticated user from Firebase and store location in Supabase
+      const user = auth.currentUser;
+      if (user) {
+        try {
+          // Fetch the user ID from Supabase
+          const { data: userData, error: fetchError } = await supabase
+            .from('users')
+            .select('id')
+            .eq('email', user.email) // Match by email
+            .single();
 
-  // const saveLocationData = async (data) => {
-  //   try {
-  //     const response = await fetch('https://your-backend-endpoint.com/saveLocation', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(data),
-  //     });
+          if (fetchError) {
+            throw fetchError;
+          }
 
-  //     if (!response.ok) {
-  //       throw new Error('Failed to save location data');
-  //     }
+          const userId = userData.id;
 
-  //     const result = await response.json();
-  //     console.log('Location saved:', result);
-  //   } catch (error) {
-  //     console.error('Error saving location:', error);
-  //     Alert.alert('Error', 'Could not save location data.');
-  //   }
-  // };
+          // Save or update the user's location in Supabase
+          const { data, error } = await supabase
+            .from('user_locations')
+            .upsert({
+              user_id: userId,
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+            })
+            .single(); // Ensure only one record is inserted or updated
+
+          if (error) {
+            console.error('Error saving location:', error);
+            Alert.alert('Error', 'Could not save location.');
+          } else {
+            console.log('Location saved successfully:', data);
+          }
+        } catch (err) {
+          console.error('Error fetching user or saving location:', err);
+        }
+      }
+    })();
+  }, []);
 
   return (
-    <Tab.Navigator 
-          screenOptions={{
-            tabBarActiveTintColor: 'black', // Set the active tab text/icon color
-            tabBarInactiveTintColor: 'gray', // Optional: set the inactive tab color
-            tabBarStyle: {
-              backgroundColor: 'white', // Set the background color of the tab bar
-            },
-          }}
-          labeled={true} 
-          barStyle={{ backgroundColor: 'white' }} 
-          activeColor="black"
-        >
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: 'black', // Set active tab color
+        tabBarInactiveTintColor: 'gray', // Set inactive tab color
+        tabBarStyle: {
+          backgroundColor: 'white', // Set background color of tab bar
+        },
+      }}
+      labeled={true}
+      barStyle={{ backgroundColor: 'white' }}
+      activeColor="black"
+    >
       <Tab.Screen
         name="Connections"
         component={Connections}
         options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home" color={color} size={26} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
         }}
       />
+
       <Tab.Screen
         name="QRCode"
         component={QRCodeScreen}
         options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="qrcode-scan" color={color} size={26} />,
-          headerTitle: "QRCode",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="qrcode-scan" color={color} size={26} />
+          ),
+          headerTitle: 'QRCode',
         }}
       />
+
       <Tab.Screen
         name="Nearby"
-        component={Nearby}
+        component={Nearby} // Nearby screen will fetch and display users based on location
         options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="map-marker" color={color} size={26} />,
-          headerTitle: "Nearby Connections",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="map-marker" color={color} size={26} />
+          ),
+          headerTitle: 'Nearby Connections',
         }}
       />
+
       <Tab.Screen
         name="Profile"
         component={EditProfileScreen}
         options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="account-circle" color={color} size={26} />,
-          headerTitle: "Edit Profile",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="account-circle" color={color} size={26} />
+          ),
+          headerTitle: 'Edit Profile',
         }}
       />
     </Tab.Navigator>
