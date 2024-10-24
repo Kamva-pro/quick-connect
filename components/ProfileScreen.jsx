@@ -27,7 +27,7 @@ const UserProfileScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <Text>User Profile for ID: {userId}</Text>
-      <Text>Name: {userData.name}</Text>
+      <Text>Name: {userData.username}</Text>
       <Text>Email: {userData.email}</Text>
       {/* Display other user profile information */}
     </View>
