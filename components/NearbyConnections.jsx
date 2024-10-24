@@ -59,7 +59,7 @@ const Nearby = () => {
             throw fetchError;
           }
   
-          const currentUserId = userData.id; // Get the Supabase user ID
+          const currentUserId = userData.id; 
           console.log('Current User ID:', currentUserId); // Log to debug
   
           // Fetch all user locations from Supabase
@@ -124,7 +124,7 @@ const Nearby = () => {
   const renderUserCard = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate('Profile', { userId: item.userId })} // Navigate to UserProfile with userId
+      onPress={() => navigation.navigate('Profile', { userId: item.userId, current_user_id: currentUserId})} // Navigate to UserProfile with userId
     >
       <Text style={styles.username}>{item.username}</Text>
       <Text style={styles.distance}>{item.distance} meters away</Text>

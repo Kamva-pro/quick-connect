@@ -4,9 +4,9 @@ import { supabase } from '../supabase';
 import {auth} from '../firebase';
 
 const UserProfileScreen = ({ route }) => {
-  const { userId } = route.params; // Retrieve the userId passed from the ScanScreen
+  const { userId, current_userId } = route.params; 
   const [userData, setUserData] = useState(null);
-  const current_user_id = useState(null);
+  
 
   useEffect(() => {
     // Fetch the user's profile data using the userId
