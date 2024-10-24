@@ -54,9 +54,49 @@ const fetchUserProfileById = async (userId) => {
   return data;
 };
 
-const addConnection = async () => {
-  
-}
+
+const addConnection = async (userId, connectionId) => {
+  // Check if userId and connectionId are the same
+  if (userId === connectionId) {
+    throw new Error("You cannot connect with yourself.");
+  }
+
+  try {
+    // Check if the connection already exists
+    const { data: existingConnection, error: fetchError } = await supabase
+      .from('connections')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('connection_id', connectionId)
+      .single();
+
+    if (fetchError) {
+      throw fetchError;
+    }
+
+    // If a connection already exists, throw an error
+    if (existingConnection) {
+      throw new Error("Connection already exists.");
+    }
+
+    // Add the new connection to the database
+    const { data, error } = await supabase
+      .from('connections')
+      .insert([
+        { user_id: userId, connection_id: connectionId }
+      ]);
+
+    if (error) {
+      throw error; // Handle insertion error
+    }
+
+    return data; // Return the created connection data
+  } catch (err) {
+    console.error('Error adding connection:', err);
+    throw new Error("Could not add connection. Please try again.");
+  }
+};
+
 
 const styles = StyleSheet.create({
   container: {
