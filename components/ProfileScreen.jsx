@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
-import { supabase } from '../supabase'; // Adjust the path to your supabase configuration
+import { supabase } from '../supabase';
+import {auth} from '../firebase';
 
 const UserProfileScreen = ({ route }) => {
   const { userId } = route.params; // Retrieve the userId passed from the ScanScreen
