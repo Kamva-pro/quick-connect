@@ -39,13 +39,21 @@ const Nearby = () => {
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
 
-      // Get the current user from Firebase
-      const currentUser = auth.currentUser;
+      // Get the current user from Supabase
+      const { data: currentUserData, error: currentUserError } = await supabase
+        .from('user_locations')
+        .select('user_id')
+        .eq('user_id', auth.currentUser.uid)
+        .single();
 
-      if (currentUser) {
+      if (currentUserError) {
+        throw currentUserError;
+      }
+
+      const currentUserId = currentUserData?.user_id;
+
+      if (currentUserId) {
         try {
-          console.log("Current Firebase user ID:", currentUser.uid); // Debugging current user ID
-
           // Fetch all user locations from Supabase
           const { data: userLocations, error: locationError } = await supabase
             .from('user_locations')
@@ -58,8 +66,6 @@ const Nearby = () => {
           // For each user, fetch their username from the 'users' table
           const usersWithDistance = await Promise.all(
             userLocations.map(async (userLoc) => {
-              console.log("Supabase user ID:", userLoc.user_id); // Debugging Supabase user ID
-
               // Fetch the username using the user_id
               const { data: userData, error: userError } = await supabase
                 .from('users')
@@ -85,13 +91,8 @@ const Nearby = () => {
             })
           );
 
-          // Check if Firebase ID (currentUser.uid) matches Supabase's user_id
-          const filteredUsers = usersWithDistance.filter(user => {
-            console.log(`Comparing Firebase UID (${currentUser.uid}) with Supabase ID (${user.userId})`);
-            return user.userId !== currentUser.uid; // Filter out the current user
-          });
-
-          console.log("Filtered users without current user:", filteredUsers);
+          // Filter out the current user by comparing their Supabase user ID
+          const filteredUsers = usersWithDistance.filter(user => user.userId !== currentUserId);
 
           // Sort users by distance (nearest first)
           const sortedUsers = filteredUsers.sort((a, b) => a.distance - b.distance);
