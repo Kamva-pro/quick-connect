@@ -124,7 +124,7 @@ const HomePage = ({ navigation }) => {
       />
 
       <Tab.Screen
-        name="Profile"
+        name="EditProfile"
         component={EditProfileScreen}
         options={{
           tabBarIcon: ({ color }) => (
