@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { supabase } from '../supabase'; // Adjust the path to your supabase configuration
 
 const UserProfileScreen = ({ route }) => {
@@ -29,6 +29,8 @@ const UserProfileScreen = ({ route }) => {
       <Text>User Profile for ID: {userId}</Text>
       <Text>Name: {userData.username}</Text>
       <Text>Email: {userData.email}</Text>
+      <Text> {userData.headline}</Text>
+      <Button> Add connection </Button> 
       {/* Display other user profile information */}
     </View>
   );
