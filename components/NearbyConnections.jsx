@@ -119,10 +119,13 @@ const Nearby = () => {
 
   // Render the user cards
   const renderUserCard = ({ item }) => (
-    <View style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => navigation.navigate('UserProfile', { userId: item.userId })} // Navigate to UserProfile with userId
+    >
       <Text style={styles.username}>{item.username}</Text>
       <Text style={styles.distance}>{item.distance} meters away</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
