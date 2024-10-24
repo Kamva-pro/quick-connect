@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Alert, TouchableOpcaity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity } from 'react-native';
 import * as Location from 'expo-location';
 import { supabase } from '../supabase'; // Supabase client setup
 import { auth } from '../firebase'; // Firebase auth setup
