@@ -6,6 +6,7 @@ import {auth} from '../firebase';
 const UserProfileScreen = ({ route }) => {
   const { userId } = route.params; // Retrieve the userId passed from the ScanScreen
   const [userData, setUserData] = useState(null);
+  const current_user_id = useState(null);
 
   useEffect(() => {
     // Fetch the user's profile data using the userId
@@ -17,6 +18,7 @@ const UserProfileScreen = ({ route }) => {
         console.error('Error fetching user profile:', error);
       }
     };
+    
 
     fetchUserProfile();
   }, [userId]);
@@ -51,6 +53,10 @@ const fetchUserProfileById = async (userId) => {
 
   return data;
 };
+
+const addConnection = async () => {
+  
+}
 
 const styles = StyleSheet.create({
   container: {
