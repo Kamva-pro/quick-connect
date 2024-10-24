@@ -44,6 +44,8 @@ const Nearby = () => {
 
       if (currentUser) {
         try {
+          console.log("Current user ID:", currentUser.uid); // Debugging current user ID
+
           // Fetch all user locations from Supabase
           const { data: userLocations, error: locationError } = await supabase
             .from('user_locations')
@@ -73,6 +75,8 @@ const Nearby = () => {
                 { latitude: userLoc.latitude, longitude: userLoc.longitude }
               );
 
+              console.log("Nearby user ID:", userLoc.user_id); // Debugging nearby user ID
+
               return {
                 userId: userLoc.user_id, // Include userId to filter out current user
                 username: userData.username, // Username from the 'users' table
@@ -85,6 +89,8 @@ const Nearby = () => {
           const usersWithoutCurrentUser = usersWithDistance.filter(
             (user) => user.userId !== currentUser.uid
           );
+
+          console.log("Users without current user:", usersWithoutCurrentUser); // Debugging user list
 
           // Sort users by distance (nearest first)
           const sortedUsers = usersWithoutCurrentUser.sort((a, b) => a.distance - b.distance);
