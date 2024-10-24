@@ -25,6 +25,7 @@ const haversineDistance = (coords1, coords2) => {
 };
 
 const Nearby = () => {
+  const navigation = useNavigation();
   const [location, setLocation] = useState(null);
   const [nearbyUsers, setNearbyUsers] = useState([]);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -120,7 +121,7 @@ const Nearby = () => {
    // Fetch nearby users when currentUserId changes
 
   // Render the user cards
-  const renderUserCard = ({ item, navigation }) => (
+  const renderUserCard = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
       onPress={() => navigation.navigate('Profile', { userId: item.userId })} // Navigate to UserProfile with userId
@@ -138,7 +139,7 @@ const Nearby = () => {
         <FlatList
           data={nearbyUsers}
           renderItem={renderUserCard}
-          keyExtractor={(item) => item.userId} // Use userId as the key
+          keyExtractor={(item) => item.userId.toString()} // Ensure the keyExtractor uses userId
         />
       )}
     </View>
