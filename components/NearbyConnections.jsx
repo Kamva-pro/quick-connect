@@ -26,6 +26,7 @@ const Nearby = () => {
   const [location, setLocation] = useState(null);
   const [nearbyUsers, setNearbyUsers] = useState([]);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState(null); // State for current user's Supabase ID
 
   useEffect(() => {
     const fetchNearbyUsers = async () => {
@@ -35,34 +36,38 @@ const Nearby = () => {
         setErrorMsg('Permission to access location was denied');
         return;
       }
-
+  
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-
-      // Get the current user from Supabase
-      const { data: currentUserData, error: currentUserError } = await supabase
-        .from('user_locations')
-        .select('user_id')
-        .eq('user_id', auth.currentUser.uid)
-        .single();
-
-      if (currentUserError) {
-        throw currentUserError;
-      }
-
-      const currentUserId = currentUserData?.user_id;
-
-      if (currentUserId) {
+  
+      // Get the current user from Firebase
+      const currentUser = auth.currentUser;
+  
+      if (currentUser) {
         try {
+          // Fetch the user record from Supabase to get the user ID
+          const { data: userData, error: fetchError } = await supabase
+            .from('users')
+            .select('id')
+            .eq('email', currentUser.email) // Match by email
+            .single(); // Ensure we get a single record
+  
+          if (fetchError) {
+            throw fetchError;
+          }
+  
+          const currentUserId = userData.id; // Get the Supabase user ID
+          console.log('Current User ID:', currentUserId); // Log to debug
+  
           // Fetch all user locations from Supabase
           const { data: userLocations, error: locationError } = await supabase
             .from('user_locations')
             .select('user_id, latitude, longitude');
-
+  
           if (locationError) {
             throw locationError;
           }
-
+  
           // For each user, fetch their username from the 'users' table
           const usersWithDistance = await Promise.all(
             userLocations.map(async (userLoc) => {
@@ -72,41 +77,45 @@ const Nearby = () => {
                 .select('username')
                 .eq('id', userLoc.user_id)
                 .single();
-
+  
               if (userError) {
                 throw userError;
               }
-
+  
               // Calculate the distance between the current user and each nearby user
               const distance = haversineDistance(
                 { latitude: location.coords.latitude, longitude: location.coords.longitude },
                 { latitude: userLoc.latitude, longitude: userLoc.longitude }
               );
-
+  
               return {
-                userId: userLoc.user_id, // Include userId to filter out current user
+                userId: userLoc.user_id, // Add user ID here
                 username: userData.username, // Username from the 'users' table
                 distance: Math.round(distance), // Distance in meters
               };
             })
           );
-
-          // Filter out the current user by comparing their Supabase user ID
-          const filteredUsers = usersWithDistance.filter(user => user.userId !== currentUserId);
-
+  
+          // Filter out the current user
+          const filteredUsers = usersWithDistance.filter(user => user && user.userId !== currentUserId);
+  
           // Sort users by distance (nearest first)
           const sortedUsers = filteredUsers.sort((a, b) => a.distance - b.distance);
-
+  
           setNearbyUsers(sortedUsers);
         } catch (err) {
           console.error('Error fetching nearby users:', err);
           Alert.alert('Error', 'Could not fetch nearby users.');
         }
+      } else {
+        console.error('No current user found'); // Log if no current user
+        setErrorMsg('No current user found');
       }
     };
-
+  
     fetchNearbyUsers();
   }, []);
+   // Fetch nearby users when currentUserId changes
 
   // Render the user cards
   const renderUserCard = ({ item }) => (
