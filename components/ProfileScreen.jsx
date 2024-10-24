@@ -33,6 +33,9 @@ const UserProfileScreen = ({ route }) => {
       <Text>Name: {userData.username}</Text>
       <Text>Email: {userData.email}</Text>
       <Text> {userData.headline}</Text>
+      <TouchableOpacity onPress={addConnection(current_userId, userId)}>
+        <Text>Add</Text>
+      </TouchableOpacity>
 
       {/* <Button title="Add" onPress={addConnection(current_userId, userId)}/> */}
       {/* Display other user profile information */}
