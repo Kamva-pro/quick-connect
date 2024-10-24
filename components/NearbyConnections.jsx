@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity } from 'react
 import * as Location from 'expo-location';
 import { supabase } from '../supabase'; // Supabase client setup
 import { auth } from '../firebase'; // Firebase auth setup
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+
 
 // Haversine formula to calculate distance between two lat/lon points
 const haversineDistance = (coords1, coords2) => {
@@ -118,7 +120,7 @@ const Nearby = () => {
    // Fetch nearby users when currentUserId changes
 
   // Render the user cards
-  const renderUserCard = ({ item }) => (
+  const renderUserCard = ({ item, navigation }) => (
     <TouchableOpacity
       style={styles.card}
       onPress={() => navigation.navigate('Profile', { userId: item.userId })} // Navigate to UserProfile with userId
