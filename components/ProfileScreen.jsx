@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { supabase } from '../supabase';
 import {auth} from '../firebase';
 
@@ -33,7 +33,8 @@ const UserProfileScreen = ({ route }) => {
       <Text>Name: {userData.username}</Text>
       <Text>Email: {userData.email}</Text>
       <Text> {userData.headline}</Text>
-      <Button onPress={addConnection(current_userId, userId)}> Add connection </Button> 
+
+      {/* <Button title="Add" onPress={addConnection(current_userId, userId)}/> */}
       {/* Display other user profile information */}
     </View>
   );
