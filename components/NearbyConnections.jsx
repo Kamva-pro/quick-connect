@@ -60,7 +60,7 @@ const Nearby = () => {
           }
   
           const currentUserId = userData.id; 
-          console.log('Current User ID:', currentUserId); // Log to debug
+          console.log('Current User ID:', currentUserId); 
   
           // Fetch all user locations from Supabase
           const { data: userLocations, error: locationError } = await supabase
