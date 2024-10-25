@@ -12,7 +12,13 @@ function Connections() {
             
             if (current_user)
             {
-                
+                try{
+
+                }
+                catch (err) {
+                    console.error('Error fetching nearby users:', err);
+                    Alert.alert('Error', 'Could not fetch nearby users.');
+                  }
             }
             
         }
