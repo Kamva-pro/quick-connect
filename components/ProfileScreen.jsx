@@ -112,7 +112,6 @@ const addConnection = async (userId, connectionId) => {
 
     return data;
   } catch (err) {
-    console.error('Error adding connection:', err);
     throw new Error("Could not add connection.");
   }
 };

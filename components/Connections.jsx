@@ -47,7 +47,7 @@ const Connections = () => {
   const renderConnectionCard = ({ item }) => (
     <TouchableOpacity 
       style={styles.card} 
-      onPress={() => navigation.navigate('UserProfileScreen', { userId: item.connectionId })}
+      onPress={() => navigation.navigate('Profile', { userId: item.connectionId })}
     >
       <Text style={styles.username}>{item.username}</Text>
       <Text style={styles.headline}>{item.headline}</Text>
