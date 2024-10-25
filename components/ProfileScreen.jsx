@@ -58,6 +58,10 @@ const fetchUserProfileById = async (userId) => {
   return data;
 };
 
+const fetchCurrentUserProfile = async (current_userId) => {
+
+}
+
 
 const addConnection = async (userId, connectionId) => {
   // Check if userId and connectionId are the same
