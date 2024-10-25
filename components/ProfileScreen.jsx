@@ -7,6 +7,7 @@ const UserProfileScreen = ({ route }) => {
   const { userId } = route.params; 
   const [userData, setUserData] = useState(null);
   
+  
 
   useEffect(() => {
     // Fetch the user's profile data using the userId
@@ -33,7 +34,7 @@ const UserProfileScreen = ({ route }) => {
       <Text>Name: {userData.username}</Text>
       <Text>Email: {userData.email}</Text>
       <Text> {userData.headline}</Text>
-      <TouchableOpacity onPress={addConnection(current_userId, userId)}>
+      <TouchableOpacity onPress={addConnection(fetchCurrentUserId(), userId)}>
         <Text>Add</Text>
       </TouchableOpacity>
 
@@ -58,7 +59,7 @@ const fetchUserProfileById = async (userId) => {
   return data;
 };
 
-const fetchCurrentUserId = async (current_userId) => {
+const fetchCurrentUserId = async () => {
   const current_user = auth.currentUser
   const {data, error} = await supabase
     .from('users')
