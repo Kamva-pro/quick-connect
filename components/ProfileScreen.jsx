@@ -66,6 +66,10 @@ const fetchCurrentUserId = async (current_userId) => {
     .eq('email', current_user.email)
     .single();
 
+    if (error) {
+      throw new Error('Error fetching userID: ', error)
+    }
+    return data
 };
 
 
