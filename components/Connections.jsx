@@ -5,7 +5,7 @@ import { View, Text } from 'react-native'
 function Connections() {
     return (
         <View style={{alignItems:'center', justifyContent:'center', flex:1}}>
-            <Text>Connections Screen</Text>
+            <Text>Your connections will appear here</Text>
         </View>
     )
 }
