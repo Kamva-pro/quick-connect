@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native
 import { supabase } from '../supabase';
 import { useNavigation } from '@react-navigation/native';
 
-const ConnectionsScreen = () => {
+const Connections = () => {
   const [connections, setConnections] = useState([]);
   const navigation = useNavigation();
 
