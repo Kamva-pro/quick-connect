@@ -4,7 +4,7 @@ import { supabase } from '../supabase';
 import {auth} from '../firebase';
 
 const UserProfileScreen = ({ route }) => {
-  const { userId, current_userId } = route.params; 
+  const { userId } = route.params; 
   const [userData, setUserData] = useState(null);
   
 
