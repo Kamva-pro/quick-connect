@@ -58,9 +58,15 @@ const fetchUserProfileById = async (userId) => {
   return data;
 };
 
-const fetchCurrentUserProfile = async (current_userId) => {
+const fetchCurrentUserId = async (current_userId) => {
+  const current_user = auth.currentUser
+  const {data, error} = await supabase
+    .from('users')
+    .select('id')
+    .eq('email', current_user.email)
+    .single();
 
-}
+};
 
 
 const addConnection = async (userId, connectionId) => {
