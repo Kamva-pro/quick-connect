@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity } from 'react-native';
 import * as Location from 'expo-location';
 import { supabase } from '../supabase'; // Supabase client setup
-import { auth } from '../firebase'; // Firebase auth setup
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import { auth } from '../firebase'; 
+import { useNavigation } from '@react-navigation/native'; 
 
 
 // Haversine formula to calculate distance between two lat/lon points
@@ -124,7 +124,7 @@ const Nearby = () => {
   const renderUserCard = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate('Profile', { userId: item.userId})} // Navigate to UserProfile with userId
+      onPress={() => navigation.navigate('Profile', { userId: item.userId})} 
     >
       <Text style={styles.username}>{item.username}</Text>
       <Text style={styles.distance}>{item.distance} meters away</Text>
@@ -139,7 +139,7 @@ const Nearby = () => {
         <FlatList
           data={nearbyUsers}
           renderItem={renderUserCard}
-          keyExtractor={(item) => item.userId.toString()} // Ensure the keyExtractor uses userId
+          keyExtractor={(item) => item.userId.toString()} 
         />
       )}
     </View>
