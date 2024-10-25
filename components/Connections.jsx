@@ -7,7 +7,15 @@ import { useNavigation } from '@react-navigation/native';
 
 function Connections() {
     useEffect(() => {
-        
+        const fetchConnections = async () => {
+            const current_user = auth.currentUser;
+            
+            if (current_user)
+            {
+                
+            }
+            
+        }
     })
 
     return (
