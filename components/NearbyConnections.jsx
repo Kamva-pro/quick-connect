@@ -29,7 +29,7 @@ const Nearby = () => {
   const [location, setLocation] = useState(null);
   const [nearbyUsers, setNearbyUsers] = useState([]);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [currentUserId, setCurrentUserId] = useState(null); // State for current user's Supabase ID
+  const [currentUserId, setCurrentUserId] = useState(null);
 
   useEffect(() => {
     const fetchNearbyUsers = async () => {
@@ -52,8 +52,8 @@ const Nearby = () => {
           const { data: userData, error: fetchError } = await supabase
             .from('users')
             .select('id')
-            .eq('email', currentUser.email) // Match by email
-            .single(); // Ensure we get a single record
+            .eq('email', currentUser.email) 
+            .single();
   
           if (fetchError) {
             throw fetchError;
