@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity } from 'react-native';
 import * as Location from 'expo-location';
-import { supabase } from '../supabase'; // Supabase client setup
+import { supabase } from '../supabase';
 import { auth } from '../firebase'; 
 import { useNavigation } from '@react-navigation/native'; 
 
