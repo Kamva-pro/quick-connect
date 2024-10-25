@@ -92,7 +92,7 @@ const HomePage = ({ navigation }) => {
       activeColor="black"
     >
       <Tab.Screen
-        name="Connections"
+        name="Network"
         component={Connections}
         options={{
           tabBarIcon: ({ color }) => (
@@ -100,6 +100,17 @@ const HomePage = ({ navigation }) => {
           ),
         }}
       />
+
+<Tab.Screen
+        name="Requests"
+        component={Connections}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
+        }}
+      />
+
 
       <Tab.Screen
         name="QRCode"
