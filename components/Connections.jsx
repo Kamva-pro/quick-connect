@@ -16,7 +16,7 @@ function Connections() {
                     const { data: userData, error: fetchError } = await supabase
                     .from('users')
                     .select('id')
-                    .eq('email', currentUser.email) 
+                    .eq('email', current_user.email) 
                     .single();
           
                   if (fetchError) {
@@ -24,10 +24,20 @@ function Connections() {
                   }
           
                   const currentUserId = userData.id;
+
+                  const { data: connections, error: connectionsError} = await supabase
+                    .from('connections')
+                    .select('*')
+                    .eq('connectionId', currentUserId)
+
+                    if (connectionsError)
+                    {
+                        throw new Error("Error fetching connections", connectionsError);
+                    }
+
                 }
                 catch (err) {
-                    console.error('Error fetching nearby users:', err);
-                    Alert.alert('Error', 'Could not fetch nearby users.');
+                    Alert.alert('Error', 'Could not fetch nearby users.', err);
                   }
             }
             
