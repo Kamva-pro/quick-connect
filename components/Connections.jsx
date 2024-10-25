@@ -4,7 +4,7 @@ import { supabase } from '../supabase';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../firebase';
 
-const ConnectionsScreen = () => {
+const Connections = () => {
   const [connections, setConnections] = useState([]);
   const navigation = useNavigation();
 
@@ -117,4 +117,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConnectionsScreen;
+export default Connections;
