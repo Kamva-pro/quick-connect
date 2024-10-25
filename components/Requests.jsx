@@ -7,8 +7,22 @@ const Requests = () => {
   const [requests, setRequests] = useState([]);
   const currentUserId = '';
 
+  const currentUser = auth.currentUser;
+
+
   useEffect(() => {
+
+    
     const fetchRequests = async () => {
+        const {userData, fetchError} = await supabase
+        .from('users')
+        .select('id')
+        .eq("email", currentUser.email)
+        .single();
+
+        if (fetchError){
+            throw new Error("Error fetching userID");
+        }
       const { data, error } = await supabase
         .from('connections')
         .select(`
