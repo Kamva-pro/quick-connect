@@ -5,7 +5,7 @@ import {auth} from '../firebase';
 
 const Requests = () => {
   const [requests, setRequests] = useState([]);
-
+  const currentUserId = ""
   const currentUser = auth.currentUser;
 
 
@@ -23,7 +23,7 @@ const Requests = () => {
             throw new Error("Error fetching userID");
         }
 
-       const currentUserId = userData.id
+       currentUserId = userData.id
       const { data, error } = await supabase
         .from('connections')
         .select(`
