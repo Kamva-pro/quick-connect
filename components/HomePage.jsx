@@ -11,7 +11,8 @@ import { auth } from '../firebase'; // Firebase auth setup
 import QRCodeScreen from './QRCodeScreen';
 import EditProfileScreen from './EditProfileScreen';
 import Connections from './Connections';
-import Nearby from './NearbyConnections'; // This will display users based on location
+import Nearby from './NearbyConnections';
+import Requests from './Requests';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -103,7 +104,7 @@ const HomePage = ({ navigation }) => {
 
 <Tab.Screen
         name="Requests"
-        component={Connections}
+        component={Requests}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
