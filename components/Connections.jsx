@@ -13,7 +13,17 @@ function Connections() {
             if (current_user)
             {
                 try{
-
+                    const { data: userData, error: fetchError } = await supabase
+                    .from('users')
+                    .select('id')
+                    .eq('email', currentUser.email) 
+                    .single();
+          
+                  if (fetchError) {
+                    throw fetchError;
+                  }
+          
+                  const currentUserId = userData.id;
                 }
                 catch (err) {
                     console.error('Error fetching nearby users:', err);
