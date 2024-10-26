@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, Image } from 'react-native';
 import { supabase } from '../supabase'; 
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -76,7 +76,8 @@ const SignupScreen = () => {
 
   return (
     <View style={{ padding: 20 }}>
-      
+      <Image width={250} height={250} src='../assets/logo.png'></Image>
+
       <TextInput
         placeholder="Username"
         value={username}
