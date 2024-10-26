@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, TextInput, TouchableOpacity, Text, ScrollView } from 'react-native';
-import { supabase } from '../supabase'; // Import the Supabase client
-import { auth } from '../firebase'; // Import auth from firebase.js
+import { supabase } from '../supabase'; 
+import { auth } from '../firebase'; 
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 const EditProfileScreen = () => {

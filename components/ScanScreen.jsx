@@ -15,7 +15,7 @@ const ScanScreen = ({ navigation }) => {
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({ data }) => {
     setScanned(true); // Stop scanning once a QR code is detected
 
     // Example data: quickconnect://profile/12345 (extract the user ID)
@@ -88,11 +88,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   frame: {
-    width: 250, // Adjust the size of the frame
-    height: 150, // Adjust the size of the frame
-    // borderWidth: 3, // Thickness of the border
-    // borderColor: 'white', // Color of the border
-    borderRadius: 10, // Optional: rounded corners for the frame
+    width: 250, 
+    height: 150, 
+    borderRadius: 10, 
   },
   topDim: {
     position: 'absolute',
