@@ -4,10 +4,9 @@ import * as Device from 'expo-device';
 import * as Location from 'expo-location';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { supabase } from '../supabase'; // Supabase client setup
-import { auth } from '../firebase'; // Firebase auth setup
+import { supabase } from '../supabase'; 
+import { auth } from '../firebase';
 
-// Import your screens
 import QRCodeScreen from './QRCodeScreen';
 import EditProfileScreen from './EditProfileScreen';
 import Connections from './Connections';
@@ -20,7 +19,6 @@ const HomePage = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  // Update location when homepage loads
   useEffect(() => {
     (async () => {
       if (Platform.OS === 'android' && !Device.isDevice) {
@@ -64,7 +62,7 @@ const HomePage = ({ navigation }) => {
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
             })
-            .single(); // Ensure only one record is inserted or updated
+            .single(); 
 
           if (error) {
             console.error('Error saving location:', error);
@@ -82,10 +80,10 @@ const HomePage = ({ navigation }) => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: 'black', // Set active tab color
-        tabBarInactiveTintColor: 'gray', // Set inactive tab color
+        tabBarActiveTintColor: 'black', 
+        tabBarInactiveTintColor: 'gray', 
         tabBarStyle: {
-          backgroundColor: 'white', // Set background color of tab bar
+          backgroundColor: 'white', 
         },
       }}
       labeled={true}
@@ -126,7 +124,7 @@ const HomePage = ({ navigation }) => {
 
       <Tab.Screen
         name="Nearby"
-        component={Nearby} // Nearby screen will fetch and display users based on location
+        component={Nearby}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="map-marker" color={color} size={26} />
