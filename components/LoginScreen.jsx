@@ -52,6 +52,7 @@ const LoginScreen = ({ navigation }) => {
     <View style={styles.container}>
       {/* <Image>
       </Image> */}
+      <Image src='../assets/logo.png'></Image>
       <TextInput
         placeholder="Email"
         value={email}
