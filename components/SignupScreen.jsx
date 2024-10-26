@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text } from 'react-native';
-import { supabase } from '../supabase'; // Import the Supabase client
-import { auth } from '../firebase'; // Import auth from firebase.js
-import { createUserWithEmailAndPassword } from 'firebase/auth'; // Firebase function for user registration
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import { supabase } from '../supabase'; 
+import { auth } from '../firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useNavigation } from '@react-navigation/native'; 
 
 
 const SignupScreen = () => {
@@ -13,12 +13,11 @@ const SignupScreen = () => {
   const [occupation, setOccupation] = useState('');
   const [headline, setHeadline] = useState('');
   
-  const [message, setMessage] = useState(''); // State to display messages
-  const [error, setError] = useState(''); // State to display error messages
+  const [message, setMessage] = useState(''); 
+  const [error, setError] = useState(''); 
 
-  const navigation = useNavigation(); // Initialize navigation
+  const navigation = useNavigation(); 
 
-  // Function to handle signup
   const handleSignup = async () => {
     setMessage('');
     setError('');
