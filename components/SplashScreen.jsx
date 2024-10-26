@@ -3,7 +3,9 @@ import { Text, Image, View } from "react-native";
 
 const SplashScreen = () => {
     return(
-        <View></View>
+        <View>
+            <Image></Image>
+        </View>
     );
 }
 
