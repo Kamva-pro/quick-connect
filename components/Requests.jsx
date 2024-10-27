@@ -10,8 +10,6 @@ const Requests = () => {
 
 
   useEffect(() => {
-
-    
     const fetchRequests = async () => {
         const {userData, fetchError} = await supabase
         .from('users')
