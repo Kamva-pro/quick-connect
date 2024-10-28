@@ -11,12 +11,12 @@ import UserProfileScreen from './components/ProfileScreen';
 const Stack = createNativeStackNavigator();
 
 const linking = {
-  prefixes: ['quickconnect://'], // Define your app's URL scheme
+  prefixes: ['quickconnect://'], 
   config: {
     screens: {
       Signup: 'signup',
       Login: 'login',
-      Profile: 'profile/:userId', // Define a dynamic route for the profile
+      Profile: 'profile/:userId', 
       EditProfile: 'edit-profile',
       QRCode: 'qr-code',
       Home: 'home',
