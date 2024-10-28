@@ -32,7 +32,7 @@ const App = () => {
       <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
         <Stack.Screen name="Home" component={HomePage}  options={{headerLeft: null, 
-          headerTitle: "Quick Connect", title: "Quick Connect"}}/> 
+          headerTitle: "Quick Connect", title: "Quick Connect", headerBackVisible: false}}/> 
         <Stack.Screen name="Scan" component={Scan}/> 
         <Stack.Screen name="Profile" component={UserProfileScreen}/>
 
