@@ -35,10 +35,10 @@ const SignupScreen = () => {
             qr_code_link: '' 
           }
         ])
-        .select(); // Select to get the inserted data back
+        .select(); 
 
       if (supabaseError) {
-        throw supabaseError; // Trigger catch block for failed Supabase insert
+        throw supabaseError;
       }
 
       // Step 2: Generate the QR code link using the user's ID
