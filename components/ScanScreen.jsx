@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: '35%',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent black
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', 
   },
   leftDim: {
     position: 'absolute',
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     left: 0,
     width: '20%',
     bottom: '35%',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent black
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
   rightDim: {
     position: 'absolute',
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     right: 0,
     width: '20%',
     bottom: '35%',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent black
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', 
   },
   bottomDim: {
     position: 'absolute',
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     height: '35%',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent black
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
 });
 
