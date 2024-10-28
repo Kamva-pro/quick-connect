@@ -1,8 +1,7 @@
-// screens/LoginScreen.js
 import React, { useState, useEffect} from 'react';
 import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase'; // Import Firebase auth
+import { auth } from '../firebase'; 
 import { supabase } from '../supabase';
 import { useNavigation } from '@react-navigation/native';
 
@@ -26,7 +25,6 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      // Firebase authentication login
      await signInWithEmailAndPassword(auth, email, password);
 
       // Find the user's ID from Supabase
@@ -40,7 +38,7 @@ const LoginScreen = ({ navigation }) => {
         throw supabaseError;
       }
 
-      // Redirect to QR Code Screen with userId
+     
       navigation.navigate('Home');
 
     } catch (err) {
@@ -50,8 +48,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* <Image>
-      </Image> */}
+    
       <Image width={250} height={250} src='../assets/logo.png'></Image>
       <TextInput
         placeholder="Email"
