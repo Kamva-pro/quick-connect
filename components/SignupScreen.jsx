@@ -32,7 +32,6 @@ const SignupScreen = () => {
             occupation,
             headline,
             email,
-            // Generate QR code link using a placeholder for now, will update later
             qr_code_link: '' 
           }
         ])
