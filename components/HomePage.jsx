@@ -95,7 +95,7 @@ const HomePage = ({ navigation }) => {
         component={Connections}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
+            <MaterialCommunityIcons name="account-multiple" color={color} size={26} />
           ),
         }}
       />
@@ -105,7 +105,7 @@ const HomePage = ({ navigation }) => {
         component={Requests}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
+            <MaterialCommunityIcons name="account-plus" color={color} size={26} />
           ),
         }}
       />
