@@ -75,7 +75,7 @@ const SignupScreen = () => {
 
   return (
     <View style={{ padding: 20 }}>
-      <Image width={250} height={250} src='../assets/logo.png'></Image>
+      <Image width={300} height={300} src='../assets/logo.png'></Image>
 
       <TextInput
         placeholder="Username"
