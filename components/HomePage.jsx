@@ -11,7 +11,6 @@ import QRCodeScreen from './QRCodeScreen';
 import EditProfileScreen from './EditProfileScreen';
 import Connections from './Connections';
 import Nearby from './NearbyConnections';
-import Requests from './Requests';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -99,17 +98,6 @@ const HomePage = ({ navigation }) => {
           ),
         }}
       />
-
-<Tab.Screen
-        name="Requests"
-        component={Requests}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account-plus" color={color} size={26} />
-          ),
-        }}
-      />
-
 
       <Tab.Screen
         name="QRCode"
