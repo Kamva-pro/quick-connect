@@ -11,10 +11,8 @@ const Connections = () => {
   useEffect(() => {
     const fetchConnections = async () => {
       try {
-        // Fetch current user's ID
         const currentUserId = await fetchCurrentUserId();
 
-        // Fetch connections with user details for each connection_id
         const { data, error } = await supabase
           .from('connections')
           .select(`
