@@ -99,7 +99,9 @@ const EditProfileScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 20 }} keyboardShouldPersistTaps="handled">
-      <TouchableOpacity style={styles.circularDiv}></TouchableOpacity>
+      <TouchableOpacity style={styles.circularDiv}>
+        <Text>{username[0]}</Text>
+      </TouchableOpacity>
       <TextInput
         placeholder="Username"
         value={username}
