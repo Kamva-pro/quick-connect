@@ -99,6 +99,7 @@ const EditProfileScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 20 }} keyboardShouldPersistTaps="handled">
+      <TouchableOpacity style={styles.circularDiv}></TouchableOpacity>
       <TextInput
         placeholder="Username"
         value={username}
@@ -205,5 +206,9 @@ const EditProfileScreen = () => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  
+})
 
 export default EditProfileScreen;
