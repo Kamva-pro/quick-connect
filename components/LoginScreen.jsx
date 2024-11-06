@@ -49,7 +49,7 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
     
-      <Image width={300} height={300} src='../assets/logo.png'></Image>
+      <Image  style={styles.img} src='../assets/logo.png'></Image>
       <TextInput
         placeholder="Email"
         value={email}
@@ -95,6 +95,10 @@ const styles = StyleSheet.create({
     color: "blue",
     marginTop: 12,
     textAlign: 'center'
+  },
+  img: {
+    width: "300",
+    height: "300"
   }
 });
 
