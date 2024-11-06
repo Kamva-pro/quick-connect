@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, TextInput, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { TextInput, TouchableOpacity, Text, ScrollView, StyleSheet } from 'react-native';
 import { supabase } from '../supabase'; 
 import { auth } from '../firebase'; 
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -208,7 +208,7 @@ const EditProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  
+
 })
 
 export default EditProfileScreen;
