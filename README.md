@@ -16,25 +16,18 @@ To set up the app locally, follow these instructions:
 ### Prerequisites
 Ensure you have **Node.js** installed. Verify installation with:
 
-```bash
 node -v
 
 Install the Expo CLI globally:
 
-bash
-Copy code
 npm install -g expo-cli
 Installation
 Clone the Repository:
 
-bash
-Copy code
 git clone https://github.com/kamva-pro/quick-connect.git
 cd quick-connect
 Install Dependencies:
 
-bash
-Copy code
 npm install
 Set Up Firebase and Supabase (Optional for Full Functionality):
 Firebase: Set up a Firebase project for authentication if you want to test user login features.
@@ -44,8 +37,6 @@ For testing, public read-only access can be enabled on Supabase and Firebase, or
 Running the App
 Start the app in development mode:
 
-bash
-Copy code
 expo start
 Follow the on-screen instructions to run the app on Android or iOS.
 
