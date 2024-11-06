@@ -121,6 +121,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
+  profileCard: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 16,
+    marginVertical: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5, 
+  }
 });
 
 export default UserProfileScreen;
