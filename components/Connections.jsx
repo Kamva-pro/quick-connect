@@ -64,7 +64,6 @@ const Connections = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>My Connections</Text>
       {connections.length > 0 ? (
         <FlatList
           data={connections}
@@ -72,7 +71,7 @@ const Connections = () => {
           renderItem={renderConnectionCard}
         />
       ) : (
-        <Text>No connections found.</Text>
+        <Text>You don't have any connections.</Text>
       )}
     </View>
   );
