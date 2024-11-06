@@ -43,6 +43,10 @@ const UserProfileScreen = ({ route }) => {
     <View style={styles.container}>
       <View style={styles.profileBackground}></View>
       <Image style={styles.profileImage} source={'../assets/logo.png'}></Image>
+      <Text>{userData.username}</Text>
+      <Text>{userData.email}</Text>
+      <Text>{userData.phone}</Text>      
+
     </View>
   );
 };
