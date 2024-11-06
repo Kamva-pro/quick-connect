@@ -115,16 +115,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center'
   },
   profileBackground: {
     height: '400',
     width: "100%",
   },
   profileImage: {
+    height: "300px",
+    width: "300px",
     borderRadius: "100px",
     borderColor: "transparent",
     borderWidth: "1px",
-    borderStyle: "solid"
+    borderStyle: "solid",
+    marginTop: "-60px"
   }
 });
 
