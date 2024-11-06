@@ -1,6 +1,3 @@
-
-Here’s a refined version of the README that maintains your original style and includes additional guidance for setup and usage.
-
 Quick Connect
 About
 Quick Connect is a networking app that simplifies professional connections by replacing physical business cards with digital ones. It offers fast, reliable access to contact information while prioritizing the safety and protection of your personal data.
