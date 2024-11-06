@@ -100,7 +100,7 @@ const EditProfileScreen = () => {
   return (
     <ScrollView contentContainerStyle={{ padding: 20 }} keyboardShouldPersistTaps="handled">
       <TouchableOpacity style={styles.circularDiv}>
-        <Text>{username[0]}</Text>
+        <Text style={styles.initial}>{username[0]}</Text>
       </TouchableOpacity>
       <TextInput
         placeholder="Username"
@@ -221,7 +221,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-
+  },
+  initial: {
+    color: "Black",
+    fontSize: "24",
+    fontWeight: "700",
+    
   }
 })
 
