@@ -6,7 +6,6 @@ const Events = () => {
     return(
         <View>
                 <Text>Nearby events you follow will appear here</Text>
-
         </View>
     );
 

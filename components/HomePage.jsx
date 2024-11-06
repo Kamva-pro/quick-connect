@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Alert,
-  Platform,
-  View,
-  Text,
-  Modal,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import {Alert,Platform,View,Text,Modal,FlatList,TouchableOpacity,StyleSheet} from 'react-native';
 import * as Device from 'expo-device';
 import * as Location from 'expo-location';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
