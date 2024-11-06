@@ -42,7 +42,7 @@ const UserProfileScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.profileBackground}></View>
-      <Image source={'../assets/logo.png'}></Image>
+      <Image style={styles.profileImage} source={'../assets/logo.png'}></Image>
     </View>
   );
 };
@@ -119,6 +119,12 @@ const styles = StyleSheet.create({
   profileBackground: {
     height: '400',
     width: "100%",
+  },
+  profileImage: {
+    borderRadius: "100px",
+    borderColor: "transparent",
+    borderWidth: "1px",
+    borderStyle: "solid"
   }
 });
 
