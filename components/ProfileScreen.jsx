@@ -120,6 +120,15 @@ const styles = StyleSheet.create({
   profileBackground: {
     height: '400',
     width: "100%",
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 16,
+    marginVertical: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5, 
   },
   profileImage: {
     height: "300px",
