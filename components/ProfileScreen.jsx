@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
 import { supabase } from '../supabase';
 import { auth } from '../firebase';
 
@@ -42,7 +42,7 @@ const UserProfileScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.profileBackground}></View>
-      
+      <Image source={'../assets/logo.png'}></Image>
     </View>
   );
 };
