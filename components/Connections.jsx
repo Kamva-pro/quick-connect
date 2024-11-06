@@ -8,7 +8,7 @@ import * as Location from 'expo-location';
 
 const Tab = createMaterialTopTabNavigator();
 
-const ConnectionsScreen = () => {
+const Connections = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Nearby Users" component={NearbyUsersTab} />
@@ -244,4 +244,4 @@ const styles = StyleSheet.create({
   distance: { fontSize: 12, color: 'gray' },
 });
 
-export default ConnectionsScreen;
+export default Connections;
