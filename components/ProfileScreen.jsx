@@ -41,13 +41,8 @@ const UserProfileScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <Text>User Profile for ID: {userId}</Text>
-      <Text>Name: {userData.username}</Text>
-      <Text>Email: {userData.email}</Text>
-      <Text>{userData.headline}</Text>
-      <TouchableOpacity onPress={handleAddConnection}>
-        <Text>Add Connection</Text>
-      </TouchableOpacity>
+      <View style={styles.profileBackground}></View>
+      
     </View>
   );
 };
@@ -121,17 +116,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  profileCard: {
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 16,
-    marginVertical: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 5, 
+  profileBackground: {
+    height: '400',
+    width: "100%",
   }
 });
 
