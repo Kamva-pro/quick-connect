@@ -208,7 +208,19 @@ const EditProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  circularDiv: {
+    backgroundColor: "white",
+    width: "60",
+    height: "60",
+    borderColor: "transparent",
+    borderStyle: "solid",
+    borderWidth: "1",
+    borderRadius: "50",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
 
+  }
 })
 
 export default EditProfileScreen;
