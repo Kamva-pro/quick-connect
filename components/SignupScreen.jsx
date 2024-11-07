@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, Image } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, Image, StyleSheet } from 'react-native';
 import { supabase } from '../supabase'; 
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
