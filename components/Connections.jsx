@@ -213,7 +213,6 @@ const RequestsTab = () => {
   );
 };
 
-// Fetch current user's ID from Firebase
 const fetchCurrentUserId = async () => {
   const current_user = auth.currentUser;
   const { data, error } = await supabase
