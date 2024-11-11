@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient'; // Make sure to install this dependency
 import { supabase } from '../supabase';
 import { auth } from '../firebase';
 
@@ -45,18 +46,15 @@ const UserProfileScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      {/* Background Cover */}
-      <ImageBackground
-        source={{ uri: 'https://example.com/cover-image.jpg' }} // Replace with a suitable cover image URL
-        style={styles.cover}
-      >
+      {/* Gradient Cover */}
+      <LinearGradient colors={['#4a90e2', '#50e3c2']} style={styles.cover}>
         <View style={styles.avatarContainer}>
           {/* Circular Avatar with Initial */}
           <View style={styles.avatar}>
             <Text style={styles.avatarText}>{getInitials(userData.username)}</Text>
           </View>
         </View>
-      </ImageBackground>
+      </LinearGradient>
 
       {/* User Info */}
       <View style={styles.infoContainer}>
@@ -146,6 +144,9 @@ const styles = StyleSheet.create({
     height: 200,
     width: '100%',
     justifyContent: 'flex-end',
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
+    overflow: 'hidden',
   },
   avatarContainer: {
     alignItems: 'center',
