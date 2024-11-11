@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, ImageBackground } from 'react-native';
 import { supabase } from '../supabase';
 import { auth } from '../firebase';
+
+// Import background images
+const bgImages = [
+  require('../assets/bg-imgs/bg1.jpg'),
+  require('../assets/bg-imgs/bg2.jpg'),
+  require('../assets/bg-imgs/bg3.jpg'),
+];
 
 const UserProfileScreen = ({ route }) => {
   const { userId } = route.params;
   const [userData, setUserData] = useState(null);
+  const [bgImage, setBgImage] = useState(null);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -18,6 +26,7 @@ const UserProfileScreen = ({ route }) => {
     };
 
     fetchUserProfile();
+    setBgImage(bgImages[Math.floor(Math.random() * bgImages.length)]);
   }, [userId]);
 
   const handleAddConnection = async () => {
@@ -39,18 +48,24 @@ const UserProfileScreen = ({ route }) => {
     return <Text>Loading profile...</Text>;
   }
 
+  const renderAvatar = () => {
+    if (userData.avatar_url) {
+      return <Image source={{ uri: userData.avatar_url }} style={styles.avatar} />;
+    }
+    const initial = userData.username ? userData.username[0].toUpperCase() : '?';
+    return (
+      <View style={styles.avatarPlaceholder}>
+        <Text style={styles.avatarInitial}>{initial}</Text>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
-      {/* Background Gradient Simulation */}
-      <View style={styles.backgroundCover}>
-        <View style={styles.gradientLayer1} />
-        <View style={styles.gradientLayer2} />
-      </View>
-
-      {/* Avatar */}
-      <View style={styles.avatarContainer}>
-        <Image source={{ uri: userData.avatar_url }} style={styles.avatar} />
-      </View>
+      <ImageBackground source={bgImage} style={styles.backgroundCover}>
+        {/* Avatar */}
+        <View style={styles.avatarContainer}>{renderAvatar()}</View>
+      </ImageBackground>
 
       {/* User Info */}
       <View style={styles.infoContainer}>
@@ -135,79 +150,68 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
-    alignItems: 'center',
   },
   backgroundCover: {
     width: '100%',
     height: 200,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-  gradientLayer1: {
-    flex: 1,
-    backgroundColor: '#4a90e2', // Darker blue color
-    opacity: 0.7,
-  },
-  gradientLayer2: {
-    flex: 1,
-    backgroundColor: '#50e3c2', // Lighter green color
-    opacity: 0.6,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   avatarContainer: {
-    marginTop: 140, // Adjust as needed
-    backgroundColor: '#fff',
-    borderRadius: 60,
-    padding: 4,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 4,
-    elevation: 5,
+    position: 'absolute',
+    top: 150,
+    alignItems: 'center',
   },
   avatar: {
     width: 100,
     height: 100,
     borderRadius: 50,
+    borderWidth: 3,
+    borderColor: '#fff',
+  },
+  avatarPlaceholder: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#ddd',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatarInitial: {
+    fontSize: 40,
+    color: '#555',
   },
   infoContainer: {
-    marginTop: 20,
-    paddingHorizontal: 20,
+    marginTop: 80,
     alignItems: 'center',
+    paddingHorizontal: 20,
   },
   username: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#333',
-    marginTop: 8,
   },
   email: {
     fontSize: 16,
     color: '#666',
-    marginTop: 4,
+    marginTop: 5,
   },
   headline: {
-    fontSize: 18,
-    color: '#777',
+    fontSize: 16,
+    color: '#666',
+    marginTop: 5,
     textAlign: 'center',
-    marginVertical: 10,
   },
   button: {
     marginTop: 20,
+    backgroundColor: '#007AFF',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#4a90e2',
-    borderRadius: 20,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 5,
+    borderRadius: 5,
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '600',
   },
 });
 
