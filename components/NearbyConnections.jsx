@@ -126,8 +126,20 @@ const Nearby = () => {
       style={styles.card}
       onPress={() => navigation.navigate('Profile', { userId: item.userId})} 
     >
+
+<View style={styles.avatarContainer}>
+        <View style={styles.avatar}>
+          <Text style={styles.avatarText}>
+            {item.username.charAt(0).toUpperCase()}
+          </Text>
+        </View>
+      </View>
+      <View style={styles.textContainer}>
+
       <Text style={styles.username}>{item.username}</Text>
       <Text style={styles.distance}>{item.distance} meters away</Text>
+      </View>
+
     </TouchableOpacity>
   );
 
@@ -189,7 +201,6 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 8,
   },
   distance: {
     fontSize: 14,
