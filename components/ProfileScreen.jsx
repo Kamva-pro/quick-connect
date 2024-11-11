@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ImageBackground } from 'react-native';
 import { supabase } from '../supabase';
 import { auth } from '../firebase';
 
@@ -39,15 +39,36 @@ const UserProfileScreen = ({ route }) => {
     return <Text>Loading profile...</Text>;
   }
 
+  const getInitials = (username) => {
+    return username ? username.charAt(0).toUpperCase() : '';
+  };
+
   return (
     <View style={styles.container}>
-      <Text>User Profile for ID: {userId}</Text>
-      <Text>Name: {userData.username}</Text>
-      <Text>Email: {userData.email}</Text>
-      <Text>{userData.headline}</Text>
-      <TouchableOpacity onPress={handleAddConnection}>
-        <Text>Add Connection</Text>
-      </TouchableOpacity>
+      {/* Background Cover */}
+      <ImageBackground
+        source={{ uri: 'https://example.com/cover-image.jpg' }} // Replace with a suitable cover image URL
+        style={styles.cover}
+      >
+        <View style={styles.avatarContainer}>
+          {/* Circular Avatar with Initial */}
+          <View style={styles.avatar}>
+            <Text style={styles.avatarText}>{getInitials(userData.username)}</Text>
+          </View>
+        </View>
+      </ImageBackground>
+
+      {/* User Info */}
+      <View style={styles.infoContainer}>
+        {userData.username && <Text style={styles.name}>{userData.username}</Text>}
+        {userData.headline && <Text style={styles.headline}>{userData.headline}</Text>}
+        {userData.email && <Text style={styles.email}>{userData.email}</Text>}
+
+        {/* Add Connection Button */}
+        <TouchableOpacity style={styles.button} onPress={handleAddConnection}>
+          <Text style={styles.buttonText}>Add Connection</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -119,7 +140,75 @@ const addConnection = async (userId, connectionId) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#f0f2f5',
+  },
+  cover: {
+    height: 200,
+    width: '100%',
+    justifyContent: 'flex-end',
+  },
+  avatarContainer: {
     alignItems: 'center',
+    marginTop: -50,
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#4a90e2',
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 8,
+  },
+  avatarText: {
+    color: '#fff',
+    fontSize: 36,
+    fontWeight: 'bold',
+  },
+  infoContainer: {
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#fff',
+    marginHorizontal: 16,
+    borderRadius: 8,
+    marginTop: 20,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+  },
+  name: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  headline: {
+    fontSize: 16,
+    color: '#666',
+    marginTop: 4,
+  },
+  email: {
+    fontSize: 14,
+    color: '#999',
+    marginTop: 4,
+  },
+  button: {
+    marginTop: 16,
+    backgroundColor: '#4a90e2',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    elevation: 3,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 
