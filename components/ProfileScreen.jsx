@@ -65,8 +65,72 @@ const UserProfileScreen = ({ route }) => {
   );
 };
 
-// Database and user helper functions remain unchanged
+// Database and user helper functions
+const fetchUserProfileById = async (userId) => {
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', userId)
+    .single();
 
+  if (error) {
+    throw new Error('Error fetching user profile');
+  }
+
+  return data;
+};
+
+const fetchCurrentUserId = async () => {
+  const current_user = auth.currentUser;
+  const { data, error } = await supabase
+    .from('users')
+    .select('id')
+    .eq('email', current_user.email)
+    .single();
+
+  if (error) {
+    throw new Error('Error fetching user ID');
+  }
+
+  return data;
+};
+
+const addConnection = async (userId, connectionId) => {
+  if (userId === connectionId) {
+    throw new Error("You cannot connect with yourself.");
+  }
+
+  try {
+    const { data: existingConnection, error: fetchError } = await supabase
+      .from('connections')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('connection_id', connectionId)
+      .single();
+
+    if (fetchError && fetchError.code !== 'PGRST116') {
+      throw fetchError;
+    }
+
+    if (existingConnection) {
+      throw new Error("Connection already exists.");
+    }
+
+    const { data, error } = await supabase
+      .from('connections')
+      .insert([{ user_id: userId, connection_id: connectionId }]);
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  } catch (err) {
+    throw new Error("Could not add connection.");
+  }
+};
+
+// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
