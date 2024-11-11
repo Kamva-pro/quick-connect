@@ -49,10 +49,20 @@ const Connections = () => {
       style={styles.card} 
       onPress={() => navigation.navigate('Profile', { userId: item.connectionId })}
     >
-      <Text style={styles.username}>{item.username}</Text>
-      <Text style={styles.headline}>{item.headline}</Text>
+      <View style={styles.avatarContainer}>
+        <View style={styles.avatar}>
+          <Text style={styles.avatarText}>
+            {item.username.charAt(0).toUpperCase()}
+          </Text>
+        </View>
+      </View>
+      <View style={styles.textContainer}>
+        <Text style={styles.username}>{item.username}</Text>
+        <Text style={styles.headline}>{item.headline}</Text>
+      </View>
     </TouchableOpacity>
   );
+  
 
   return (
     <View style={styles.container}>
