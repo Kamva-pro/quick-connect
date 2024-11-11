@@ -56,7 +56,6 @@ const Connections = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>My Connections</Text>
       {connections.length > 0 ? (
         <FlatList
           data={connections}
