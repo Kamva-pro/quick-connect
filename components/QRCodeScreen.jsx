@@ -68,9 +68,7 @@ const QRCodeScreen = ({navigation}) => {
         backgroundColor="white"
         color="black"
       />
-      <TouchableOpacity>
-        <Text>Scan</Text>
-      </TouchableOpacity>
+    
 
       <FloatingAction 
         onPressMain={() => {
