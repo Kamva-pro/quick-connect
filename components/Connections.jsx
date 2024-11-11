@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   card: {
-    flexDirection: 'row', // Arrange avatar and text horizontally
+    flexDirection: 'row', 
     backgroundColor: '#fff',
     padding: 16,
     marginVertical: 8,
@@ -123,10 +123,10 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   avatar: {
-    backgroundColor: '#007bff', // Blue color for the avatar circle
+    backgroundColor: '#007bff', 
     width: 40,
     height: 40,
-    borderRadius: 20, // Circular shape
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
