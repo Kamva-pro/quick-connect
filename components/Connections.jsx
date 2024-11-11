@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   card: {
+    flexDirection: 'row', // Arrange avatar and text horizontally
     backgroundColor: '#fff',
     padding: 16,
     marginVertical: 8,
@@ -115,6 +116,28 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
+  },
+  avatarContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  avatar: {
+    backgroundColor: '#007bff', // Blue color for the avatar circle
+    width: 40,
+    height: 40,
+    borderRadius: 20, // Circular shape
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatarText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
   username: {
     fontSize: 18,
