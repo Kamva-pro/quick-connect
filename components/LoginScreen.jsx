@@ -94,6 +94,10 @@ const styles = StyleSheet.create({
     color: "blue",
     marginTop: 12,
     textAlign: 'center'
+  },
+  img: {
+    width: "300",
+    height: "300"
   }
 });
 

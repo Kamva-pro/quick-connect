@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, TextInput, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { TextInput, TouchableOpacity, Text, ScrollView, StyleSheet } from 'react-native';
 import { supabase } from '../supabase'; 
 import { auth } from '../firebase'; 
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -99,6 +99,9 @@ const EditProfileScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 20 }} keyboardShouldPersistTaps="handled">
+      <TouchableOpacity style={styles.circularDiv}>
+        <Text style={styles.initial}>{username[0]}</Text>
+      </TouchableOpacity>
       <TextInput
         placeholder="Username"
         value={username}
@@ -205,5 +208,26 @@ const EditProfileScreen = () => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  circularDiv: {
+    backgroundColor: "white",
+    width: "60",
+    height: "60",
+    borderColor: "transparent",
+    borderStyle: "solid",
+    borderWidth: "1",
+    borderRadius: "50",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  initial: {
+    color: "Black",
+    fontSize: "24",
+    fontWeight: "700",
+    
+  }
+})
 
 export default EditProfileScreen;
