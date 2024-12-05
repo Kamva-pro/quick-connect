@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, SafeAreaView } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { Camera } from 'expo-camera';
 import { useIsFocused } from '@react-navigation/native';
 
 const ScanScreen = ({ navigation }) => {
@@ -10,7 +10,7 @@ const ScanScreen = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === 'granted');
     })();
   }, []);
@@ -20,7 +20,7 @@ const ScanScreen = ({ navigation }) => {
 
     // Example data: quickconnect://profile/12345 (extract the user ID)
     const extractedUserId = data.split('/').pop(); // Extract the user ID from the link
-    
+
     Alert.alert("QR Code Scanned", `User ID: ${extractedUserId}`, [
       {
         text: "Go to Profile",
@@ -28,9 +28,9 @@ const ScanScreen = ({ navigation }) => {
           // Navigate to the user's profile screen and pass the user ID
           navigation.navigate('Profile', { userId: extractedUserId });
           setScanned(false); // Reset scanning state after navigating
-        }
+        },
       },
-      { text: "Cancel", onPress: () => setScanned(false), style: "cancel" }
+      { text: "Cancel", onPress: () => setScanned(false), style: "cancel" },
     ]);
   };
 
@@ -46,20 +46,20 @@ const ScanScreen = ({ navigation }) => {
     <SafeAreaView style={styles.safeContainer}>
       {isFocused && (
         <View style={styles.scannerContainer}>
-          <BarCodeScanner
+          <Camera
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            barCodeScannerSettings={{
+              barCodeTypes: [Camera.Constants.BarCodeType.qr], // Specify the types of barcodes to scan
+            }}
             style={StyleSheet.absoluteFillObject} // Full-screen scanner
           />
-          
+
           {/* Overlay with dimmed areas and border frame */}
           <View style={styles.overlay}>
-            {/* Semi-transparent dimming outside the frame */}
             <View style={styles.topDim} />
             <View style={styles.leftDim} />
             <View style={styles.rightDim} />
             <View style={styles.bottomDim} />
-            
-            {/* The frame itself */}
             <View style={styles.frame} />
           </View>
         </View>
@@ -88,9 +88,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   frame: {
-    width: 250, 
-    height: 150, 
-    borderRadius: 10, 
+    width: 250,
+    height: 150,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: 'white',
   },
   topDim: {
     position: 'absolute',
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: '35%',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', 
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
   leftDim: {
     position: 'absolute',
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
     right: 0,
     width: '20%',
     bottom: '35%',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', 
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
   bottomDim: {
     position: 'absolute',
