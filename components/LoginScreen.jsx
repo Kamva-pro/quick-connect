@@ -1,46 +1,40 @@
-import React, { useState, useEffect} from 'react';
-import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase'; 
+import { auth } from '../firebase';
 import { supabase } from '../supabase';
 import { useNavigation } from '@react-navigation/native';
 
-
 const LoginScreen = ({ navigation }) => {
-  // Check if the user is already logged in
   useEffect(() => {
     const checkAuth = async () => {
       const user = auth.currentUser;
       if (user) {
-        // Redirect to HomePage if the user is already authenticated
         navigation.navigate('Home');
       }
     };
-
     checkAuth();
   }, []);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleLogin = async () => {
     try {
-     await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email, password);
 
-      // Find the user's ID from Supabase
       const { data, error: supabaseError } = await supabase
         .from('users')
         .select('id')
         .eq('email', email)
-        .single(); // Fetch single user based on email
+        .single();
 
       if (supabaseError) {
         throw supabaseError;
       }
 
-     
       navigation.navigate('Home');
-
     } catch (err) {
       setErrorMessage(err.message);
     }
@@ -48,7 +42,10 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-    
+      <Image source={require('../assets/logo.png')} style={styles.logo} />
+      <Text style={styles.title}>Welcome Back</Text>
+      <Text style={styles.subtitle}>Log in to your account</Text>
+      
       <TextInput
         placeholder="Email"
         value={email}
@@ -63,12 +60,16 @@ const LoginScreen = ({ navigation }) => {
         style={styles.input}
         secureTextEntry
       />
+      
       {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
-      <Button title="Login" onPress={handleLogin} />
-      <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-        <Text style={styles.signupText}>Go to Sign Up</Text>
+      
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Log In</Text>
       </TouchableOpacity>
-
+      
+      <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+        <Text style={styles.link}>Don't have an account? Sign up</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -76,30 +77,63 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    padding: 16,
+    alignItems: 'center',
+    padding: 20,
+    paddingTop: 50, // Start from the top of the screen
+    backgroundColor: '#f8f9fa',
+  },
+  logo: {
+    width: 150,
+    height: 150,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000', // Black text
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#000', // Black text
+    marginBottom: 20,
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
+    width: '100%',
+    height: 50,
     borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    backgroundColor: '#fff',
+    fontSize: 16,
+  },
+  button: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#000', // Black button
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  link: {
+    color: '#000', // Black text
+    fontSize: 14,
+    textDecorationLine: 'underline',
+    marginTop: 10,
   },
   errorText: {
     color: 'red',
-    marginBottom: 12,
+    fontSize: 14,
+    marginBottom: 15,
+    textAlign: 'center',
   },
-  signupText:{
-    color: "blue",
-    marginTop: 12,
-    textAlign: 'center'
-  },
-  img: {
-    width: "300",
-    height: "300"
-  }
 });
 
 export default LoginScreen;
-  
