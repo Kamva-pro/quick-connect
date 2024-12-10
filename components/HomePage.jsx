@@ -161,7 +161,7 @@ const HomePage = ({ navigation }) => {
             ) : (
               <FlatList
                 data={requests}
-                keyExtractor={(item) => item.userId}
+                keyExtractor={(item) => item.userId} // Correct use of keyExtractor
                 renderItem={({ item }) => (
                   <View style={styles.requestCard}>
                     <TouchableOpacity>
@@ -202,9 +202,6 @@ const HomePage = ({ navigation }) => {
             backgroundColor: 'white',
           },
         }}
-        labeled={true}
-        barStyle={{ backgroundColor: 'white' }}
-        activeColor="black"
       >
         <Tab.Screen
           name="Network"
@@ -252,6 +249,7 @@ const HomePage = ({ navigation }) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

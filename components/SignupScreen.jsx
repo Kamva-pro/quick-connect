@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, Image, StyleSheet } from 'react-native';
-import { supabase } from '../supabase'; 
+import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { supabase } from '../supabase';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { useNavigation } from '@react-navigation/native'; 
-
+import { useNavigation } from '@react-navigation/native';
 
 const SignupScreen = () => {
   const [email, setEmail] = useState('');
@@ -12,127 +11,143 @@ const SignupScreen = () => {
   const [username, setUsername] = useState('');
   const [occupation, setOccupation] = useState('');
   const [headline, setHeadline] = useState('');
-  
-  const [message, setMessage] = useState(''); 
-  const [error, setError] = useState(''); 
 
-  const navigation = useNavigation(); 
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
+  const navigation = useNavigation();
 
   const handleSignup = async () => {
     setMessage('');
     setError('');
-    
+
     try {
-      // Step 1: Create User in Supabase
       const { data, error: supabaseError } = await supabase
         .from('users')
-        .insert([
-          { 
-            username,
-            occupation,
-            headline,
-            email,
-            qr_code_link: '' 
-          }
-        ])
-        .select(); 
+        .insert([{ username, occupation, headline, email, qr_code_link: '' }])
+        .select();
 
       if (supabaseError) {
         throw supabaseError;
       }
 
-      // Step 2: Generate the QR code link using the user's ID
       const qrCodeLink = `quickconnect://profile/${data[0].id}`;
-      
-      // Step 3: Update the user's QR code link in Supabase
       const { error: updateError } = await supabase
         .from('users')
         .update({ qr_code_link: qrCodeLink })
-        .eq('id', data[0].id); // Update based on the generated ID
+        .eq('id', data[0].id);
 
       if (updateError) {
-        throw updateError; // Handle update error
+        throw updateError;
       }
 
-      // Step 4: Register User in Firebase Authentication
       await createUserWithEmailAndPassword(auth, email, password);
-      
-      // Show success message for Firebase
-      setMessage('User registered in Firebase successfully!');
 
-      // Show success message for Supabase
-      setMessage(prev => prev + ' User created in Supabase successfully!');
-
-      // navigation.navigate('EditProfile', { userId: data[0].id });
-      navigation.navigate("Login") 
-
-
+      setMessage('User registered successfully in Firebase and Supabase!');
+      navigation.navigate('Login');
     } catch (err) {
-      // Show error message if anything fails
       setError(err.message);
     }
   };
 
   return (
-    <View style={{ padding: 20 }}>
-      {/* <Image width={300} height={300} src='../assets/logo.png'></Image> */}
+    <View style={styles.container}>
+      <Text style={styles.title}>Create an Account</Text>
 
       <TextInput
         placeholder="Username"
         value={username}
         onChangeText={setUsername}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
       <TextInput
         placeholder="Occupation"
         value={occupation}
         onChangeText={setOccupation}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
       <TextInput
         placeholder="Headline"
         value={headline}
         onChangeText={setHeadline}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
       <TextInput
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
       <TextInput
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
-        style={{ marginBottom: 20, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
 
-      <TouchableOpacity onPress={handleSignup} style={{ backgroundColor: 'blue', padding: 12, borderRadius: 5 }}>
-        <Text style={{ textAlign: 'center', color: 'white' }}>
-          Signup
-        </Text>
+      <TouchableOpacity onPress={handleSignup} style={styles.button}>
+        <Text style={styles.buttonText}>Signup</Text>
       </TouchableOpacity>
 
-      {/* Display message or error */}
-      {message ? (
-        <Text style={{ marginTop: 20, color: 'green', textAlign: 'center' }}>{message}</Text>
-      ) : null}
-      {error ? (
-        <Text style={{ marginTop: 20, color: 'red', textAlign: 'center' }}>{error}</Text>
-      ) : null}
+      {message ? <Text style={styles.successText}>{message}</Text> : null}
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
- 
-  img: {
-    width: "300",
-    height: "300"
-  }
+  container: {
+    flex: 1,
+    padding: 20,
+    paddingTop: 50, // Top alignment
+    backgroundColor: '#f8f9fa',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000', // Black text
+    marginBottom: 20,
+  },
+  input: {
+    width: '100%',
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    backgroundColor: '#fff',
+    fontSize: 16,
+  },
+  button: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#000', // Black button
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  buttonText: {
+    color: '#fff', // White text
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  successText: {
+    color: 'green',
+    fontSize: 14,
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    marginTop: 10,
+    textAlign: 'center',
+  },
 });
 
 export default SignupScreen;
