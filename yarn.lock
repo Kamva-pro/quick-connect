@@ -3844,13 +3844,6 @@ expo-asset@~11.0.1:
     invariant "^2.2.4"
     md5-file "^3.2.3"
 
-expo-barcode-scanner@^12.0.0:
-  version "12.9.3"
-  resolved "https://registry.npmjs.org/expo-barcode-scanner/-/expo-barcode-scanner-12.9.3.tgz"
-  integrity sha512-I3zaKSINRMHbTc7sHIq14ug3fHkCsW4rweJF12yk0kHaympI2wxVgIo2DhzeZaYG1Ylkuj5aiKen3NuwDk1FSA==
-  dependencies:
-    expo-image-loader "~4.6.0"
-
 expo-camera@~16.0.8:
   version "16.0.8"
   resolved "https://registry.npmjs.org/expo-camera/-/expo-camera-16.0.8.tgz"
@@ -3886,11 +3879,6 @@ expo-font@~13.0.1:
   integrity sha512-8JE47B+6cLeKWr5ql8gU6YsPHjhrz1vMrTqYMm72No/8iW8Sb/uL4Oc0dpmbjq3hLLXBY0xPBQOgU7FQ6Y04Vg==
   dependencies:
     fontfaceobserver "^2.1.0"
-
-expo-image-loader@~4.6.0:
-  version "4.6.0"
-  resolved "https://registry.npmjs.org/expo-image-loader/-/expo-image-loader-4.6.0.tgz"
-  integrity sha512-RHQTDak7/KyhWUxikn2yNzXL7i2cs16cMp6gEAgkHOjVhoCJQoOJ0Ljrt4cKQ3IowxgCuOrAgSUzGkqs7omj8Q==
 
 expo-keep-awake@~14.0.1:
   version "14.0.1"
@@ -6021,7 +6009,6 @@ queue@6.0.2:
     "@react-navigation/stack" "^6.0.0"
     "@supabase/supabase-js" "^2.45.4"
     expo "^52.0.0"
-    expo-barcode-scanner "^12.0.0"
     expo-camera "~16.0.8"
     expo-device "~7.0.1"
     expo-location "~18.0.3"

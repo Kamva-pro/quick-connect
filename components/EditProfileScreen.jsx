@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { TextInput, TouchableOpacity, Text, ScrollView, StyleSheet } from 'react-native';
+import { TextInput, TouchableOpacity, Text, ScrollView, StyleSheet, View } from 'react-native';
 import { supabase } from '../supabase'; 
 import { auth } from '../firebase'; 
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -98,17 +98,18 @@ const EditProfileScreen = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 20 }} keyboardShouldPersistTaps="handled">
+    <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
       <TouchableOpacity style={styles.circularDiv}>
         <Text style={styles.initial}>{username[0]}</Text>
       </TouchableOpacity>
+
       <TextInput
         placeholder="Username"
         value={username}
         onChangeText={setUsername}
         returnKeyType="next"
         onSubmitEditing={() => occupationRef.current.focus()}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
       <TextInput
         ref={occupationRef}
@@ -117,7 +118,7 @@ const EditProfileScreen = () => {
         onChangeText={setOccupation}
         returnKeyType="next"
         onSubmitEditing={() => headlineRef.current.focus()}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
       <TextInput
         ref={headlineRef}
@@ -126,13 +127,13 @@ const EditProfileScreen = () => {
         onChangeText={setHeadline}
         returnKeyType="next"
         onSubmitEditing={() => numberRef.current.focus()}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
       <TextInput
         placeholder="Email"
         value={email}
         editable={false}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
       <TextInput
         ref={numberRef}
@@ -141,7 +142,7 @@ const EditProfileScreen = () => {
         onChangeText={setNumber}
         returnKeyType="next"
         onSubmitEditing={() => companyRef.current.focus()}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
       <TextInput
         ref={companyRef}
@@ -150,7 +151,7 @@ const EditProfileScreen = () => {
         onChangeText={setCompany}
         returnKeyType="next"
         onSubmitEditing={() => websiteRef.current.focus()}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
       <TextInput
         ref={websiteRef}
@@ -159,7 +160,7 @@ const EditProfileScreen = () => {
         onChangeText={setWebsite}
         returnKeyType="next"
         onSubmitEditing={() => facebookRef.current.focus()}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
       <TextInput
         ref={facebookRef}
@@ -168,7 +169,7 @@ const EditProfileScreen = () => {
         onChangeText={setFacebook}
         returnKeyType="next"
         onSubmitEditing={() => instagramRef.current.focus()}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
       <TextInput
         ref={instagramRef}
@@ -177,7 +178,7 @@ const EditProfileScreen = () => {
         onChangeText={setInstagram}
         returnKeyType="next"
         onSubmitEditing={() => linkedinRef.current.focus()}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
       <TextInput
         ref={linkedinRef}
@@ -186,7 +187,7 @@ const EditProfileScreen = () => {
         onChangeText={setLinkedin}
         returnKeyType="next"
         onSubmitEditing={() => twitterRef.current.focus()}
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
       <TextInput
         ref={twitterRef}
@@ -194,40 +195,76 @@ const EditProfileScreen = () => {
         value={twitter}
         onChangeText={setTwitter}
         returnKeyType="done"
-        style={{ marginBottom: 10, borderBottomWidth: 1, borderColor: '#ccc', padding: 8 }}
+        style={styles.input}
       />
 
-      <TouchableOpacity onPress={handleUpdateProfile} style={{ backgroundColor: 'blue', padding: 12, borderRadius: 5 }}>
-        <Text style={{ textAlign: 'center', color: 'white' }}>
-          Save Changes
-        </Text>
+      <TouchableOpacity onPress={handleUpdateProfile} style={styles.saveButton}>
+        <Text style={styles.saveButtonText}>Save Changes</Text>
       </TouchableOpacity>
 
-      {message ? <Text style={{ marginTop: 20, color: 'green', textAlign: 'center' }}>{message}</Text> : null}
-      {error ? <Text style={{ marginTop: 20, color: 'red', textAlign: 'center' }}>{error}</Text> : null}
+      {message ? <Text style={styles.successText}>{message}</Text> : null}
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    padding: 20,
+  },
   circularDiv: {
-    backgroundColor: "white",
-    width: "60",
-    height: "60",
-    borderColor: "transparent",
-    borderStyle: "solid",
-    borderWidth: "1",
-    borderRadius: "50",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: 'lightgray',
+    width: 80,
+    height: 80,
+    borderColor: 'transparent',
+    borderWidth: 2,
+    borderRadius: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    alignSelf: 'center',
   },
   initial: {
-    color: "Black",
-    fontSize: "24",
-    fontWeight: "700",
-    
-  }
-})
+    fontSize: 40,
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  input: {
+    width: '100%',
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    backgroundColor: '#fff',
+    fontSize: 16,
+  },
+  saveButton: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#000',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  saveButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  successText: {
+    color: 'green',
+    fontSize: 14,
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    marginTop: 10,
+    textAlign: 'center',
+  },
+});
 
 export default EditProfileScreen;
