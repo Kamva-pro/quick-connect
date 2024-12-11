@@ -199,8 +199,9 @@ const HomePage = ({ navigation }) => {
           tabBarActiveTintColor: 'black',
           tabBarInactiveTintColor: 'gray',
           tabBarStyle: {
-            backgroundColor: 'white',
-          },
+            backgroundColor: '#fff',  // Ensure background is white
+            borderTopWidth: 0,        // Optional: Remove top border for a cleaner look
+            elevation: 0,                 },
         }}
       >
         <Tab.Screen

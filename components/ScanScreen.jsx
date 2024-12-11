@@ -49,7 +49,7 @@ const ScanScreen = ({ navigation }) => {
           <Camera
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
             barCodeScannerSettings={{
-              barCodeTypes: [Camera.Constants.BarCodeType.qr], // Specify the types of barcodes to scan
+              barCodeTypes: ['qr'], // Direct reference to 'qr' as a string
             }}
             style={StyleSheet.absoluteFillObject} // Full-screen scanner
           />
