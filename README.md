@@ -18,7 +18,8 @@ Ensure you have **Node.js** installed. Verify installation with:
 
 node -v
 
-Install the Expo CLI globally:
+
+## Install the Expo CLI globally:
 
 npm install -g expo-cli
 Installation
@@ -26,24 +27,23 @@ Clone the Repository:
 
 git clone https://github.com/kamva-pro/quick-connect.git
 cd quick-connect
-Install Dependencies:
 
+## Install Dependencies:
 npm install
-Set Up Firebase and Supabase (Optional for Full Functionality):
+
+## OPTIONAL: Set Up Firebase and Supabase (Optional for Full Functionality):
 Firebase: Set up a Firebase project for authentication if you want to test user login features.
 Supabase: Create a Supabase project and configure tables for user data (users and user_locations). Add the required API keys and URLs in a .env file.
 For testing, public read-only access can be enabled on Supabase and Firebase, or use pre-configured credentials if provided.
 
-Running the App
-Start the app in development mode:
+## Running the App
+To run the app firstly ensure you are in the /quick-connect directory then run:
+`npx expo start` 
 
-expo start
-Follow the on-screen instructions to run the app on Android or iOS.
+## Screenshots
+Screenshots of the app will be available once the first version is released.  
 
-Screenshots
-TODO: ADD SCREENSHOTS OF THE APP IN ACTION
-
-Contributing
+## Contributing
 To contribute:
 
 Fork the repository.
@@ -51,7 +51,8 @@ Create a new branch (git checkout -b feature/YourFeature).
 Commit your changes (git commit -m 'Add feature').
 Push to your branch (git push origin feature/YourFeature).
 Open a Pull Request.
-License
+
+## License
 This project is licensed under the MIT License.
 
 
