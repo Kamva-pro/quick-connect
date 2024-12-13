@@ -17,11 +17,14 @@ const SignupScreen = () => {
 
   const navigation = useNavigation();
 
+  const [loading, setLoading] = useState(false);
+
   const handleSignup = async () => {
     setMessage('');
     setError('');
 
     try {
+      setLoading(true);
       const { data, error: supabaseError } = await supabase
         .from('users')
         .insert([{ username, occupation, headline, email, qr_code_link: '' }])
@@ -47,6 +50,9 @@ const SignupScreen = () => {
       navigation.navigate('Login');
     } catch (err) {
       setError(err.message);
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -88,7 +94,7 @@ const SignupScreen = () => {
       />
 
       <TouchableOpacity onPress={handleSignup} style={styles.button}>
-        <Text style={styles.buttonText}>Signup</Text>
+      <Text style={styles.buttonText}>{loading ? 'Signing up...' : 'Sign Up'}</Text>
       </TouchableOpacity>
 
       {message ? <Text style={styles.successText}>{message}</Text> : null}
