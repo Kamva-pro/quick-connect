@@ -16,11 +16,15 @@ const LoginScreen = ({ navigation }) => {
     checkAuth();
   }, []);
 
+  const [loading, setLoading] = useState(false);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleLogin = async () => {
+
+    setLoading(true)
     try {
       await signInWithEmailAndPassword(auth, email, password);
 
@@ -37,6 +41,9 @@ const LoginScreen = ({ navigation }) => {
       navigation.navigate('Home');
     } catch (err) {
       setErrorMessage(err.message);
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -64,7 +71,7 @@ const LoginScreen = ({ navigation }) => {
       {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
       
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Log In</Text>
+      <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'Login'}</Text>
       </TouchableOpacity>
       
       <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
