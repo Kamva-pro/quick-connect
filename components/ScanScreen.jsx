@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, SafeAreaView } from 'react-native';
-import { Camera, CameraView} from 'expo-camera';
+import { Camera, CameraView } from 'expo-camera';
 import { useIsFocused } from '@react-navigation/native';
 
 const ScanScreen = ({ navigation }) => {
@@ -10,26 +10,21 @@ const ScanScreen = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
-      try {
-        const { status } = await Camera.requestCameraPermissionsAsync();
-        setHasPermission(status === 'granted');
-      } catch (error) {
-        console.error("Error requesting camera permissions:", error);
-        setHasPermission(false);
-      }
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === 'granted');
     })();
   }, []);
 
   const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
-    const extractedUserId = data.split('/').pop();
 
+    const extractedUserId = data.split('/').pop(); // Extract the user ID from the link
     Alert.alert("QR Code Scanned", `User ID: ${extractedUserId}`, [
       {
         text: "Go to Profile",
         onPress: () => {
           navigation.navigate('Profile', { userId: extractedUserId });
-          setTimeout(() => setScanned(false), 500);
+          setScanned(false);
         },
       },
       { text: "Cancel", onPress: () => setScanned(false), style: "cancel" },
@@ -47,19 +42,24 @@ const ScanScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeContainer}>
       {isFocused && hasPermission && (
-        <CameraView
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          facing='back'
-          style={StyleSheet.absoluteFillObject}
-        />
+        <View style={styles.scannerContainer}>
+          <CameraView
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={StyleSheet.absoluteFillObject}
+          />
+          {/* Overlay with dimmed areas and border frame */}
+          <View style={styles.overlay}>
+            <View style={styles.topDim} />
+            <View style={styles.leftDim} />
+            <View style={styles.rightDim} />
+            <View style={styles.bottomDim} />
+            <View style={styles.frame} />
+          </View>
+        </View>
       )}
     </SafeAreaView>
   );
 };
-
-
-
-
 
 const styles = StyleSheet.create({
   safeContainer: {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: 'white',
+    borderColor: 'transparent',
   },
   topDim: {
     position: 'absolute',
