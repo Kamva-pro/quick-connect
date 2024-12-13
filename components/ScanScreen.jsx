@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, SafeAreaView } from 'react-native';
-import { Camera } from 'expo-camera';
+import { Camera, CameraView} from 'expo-camera';
 import { useIsFocused } from '@react-navigation/native';
 
 const ScanScreen = ({ navigation }) => {
@@ -10,24 +10,26 @@ const ScanScreen = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
+      try {
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        setHasPermission(status === 'granted');
+      } catch (error) {
+        console.error("Error requesting camera permissions:", error);
+        setHasPermission(false);
+      }
     })();
   }, []);
 
   const handleBarCodeScanned = ({ data }) => {
-    setScanned(true); // Stop scanning once a QR code is detected
-
-    // Example data: quickconnect://profile/12345 (extract the user ID)
-    const extractedUserId = data.split('/').pop(); // Extract the user ID from the link
+    setScanned(true);
+    const extractedUserId = data.split('/').pop();
 
     Alert.alert("QR Code Scanned", `User ID: ${extractedUserId}`, [
       {
         text: "Go to Profile",
         onPress: () => {
-          // Navigate to the user's profile screen and pass the user ID
           navigation.navigate('Profile', { userId: extractedUserId });
-          setScanned(false); // Reset scanning state after navigating
+          setTimeout(() => setScanned(false), 500);
         },
       },
       { text: "Cancel", onPress: () => setScanned(false), style: "cancel" },
@@ -44,29 +46,20 @@ const ScanScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safeContainer}>
-      {isFocused && (
-        <View style={styles.scannerContainer}>
-          <Camera
-            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-            barCodeScannerSettings={{
-              barCodeTypes: ['qr'], // Direct reference to 'qr' as a string
-            }}
-            style={StyleSheet.absoluteFillObject} // Full-screen scanner
-          />
-
-          {/* Overlay with dimmed areas and border frame */}
-          <View style={styles.overlay}>
-            <View style={styles.topDim} />
-            <View style={styles.leftDim} />
-            <View style={styles.rightDim} />
-            <View style={styles.bottomDim} />
-            <View style={styles.frame} />
-          </View>
-        </View>
+      {isFocused && hasPermission && (
+        <CameraView
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          facing='back'
+          style={StyleSheet.absoluteFillObject}
+        />
       )}
     </SafeAreaView>
   );
 };
+
+
+
+
 
 const styles = StyleSheet.create({
   safeContainer: {
