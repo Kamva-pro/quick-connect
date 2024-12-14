@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, Alert, SafeAreaView, StyleSheet } from "react-native";
-import { CameraView } from "expo-camera";
+import { CameraView, Camera } from "expo-camera";
 import { useIsFocused } from "@react-navigation/native";
 
 const ScanScreen = ({ navigation }) => {
@@ -10,10 +10,12 @@ const ScanScreen = ({ navigation }) => {
   const qrLock = useRef(false); // Prevent scanning multiple times
 
   useEffect(() => {
-    (async () => {
-      const { status } = await CameraView.requestPermissionsAsync();
+    const getPermissions = async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync(); // Request permission with Camera (not CameraView)
       setHasPermission(status === "granted");
-    })();
+    };
+
+    getPermissions();
   }, []);
 
   const handleBarCodeScanned = ({ data }) => {

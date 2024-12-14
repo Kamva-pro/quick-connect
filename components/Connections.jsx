@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   avatar: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#000',
     width: 40,
     height: 40,
     borderRadius: 20,
