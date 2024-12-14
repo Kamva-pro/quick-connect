@@ -23,29 +23,11 @@ const ScanScreen = ({ navigation }) => {
 
     qrLock.current = true;
 
-    // Process the QR code data
-    const extractedUserId = data.split("/").pop(); // Extract user ID from the URL or QR code
+    const extractedUserId = data.split("/").pop(); 
     navigation.navigate("Profile", { userId: extractedUserId });
-          setScanned(false); // Reset scanning
-          qrLock.current = false; // Unlock scanning
-    // Alert.alert("QR Code Scanned", `User ID: ${extractedUserId}`, [
-    //   {
-    //     text: "Go to Profile",
-    //     onPress: () => {
-    //       navigation.navigate("Profile", { userId: extractedUserId });
-    //       setScanned(false); // Reset scanning
-    //       qrLock.current = false; // Unlock scanning
-    //     },
-    //   },
-    //   {
-    //     text: "Cancel",
-    //     onPress: () => {
-    //       setScanned(false); // Reset scanning
-    //       qrLock.current = false; // Unlock scanning
-    //     },
-    //     style: "cancel",
-    //   },
-    // ]);
+          setScanned(false); 
+          qrLock.current = false; 
+ 
   };
 
   if (hasPermission === null) {
@@ -70,7 +52,7 @@ const ScanScreen = ({ navigation }) => {
         <CameraView
           style={StyleSheet.absoluteFillObject}
           onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
-          barCodeScannerSettings={{ barCodeTypes: ["qr"] }} // Ensure the correct barcode type is passed
+          barCodeScannerSettings={{ barCodeTypes: ["qr"] }} 
         />
       )}
       <View style={styles.overlay}>
