@@ -45,6 +45,8 @@ const UserProfileScreen = ({ route }) => {
       const result = await addConnection(currentUser.id, userId);
       if (result) {
         Alert.alert('Connection added successfully!');
+        addNotification(`Connection added with user ID: ${userId}`);
+
       }
     } catch (error) {
       Alert.alert('Error', error.message);
@@ -58,7 +60,7 @@ const UserProfileScreen = ({ route }) => {
 
   const renderLink = (url, imageSource) => {
     // If URL is empty, display the default image
-    const linkUrl = url ? url : "#";  // Set to "#" to avoid opening any invalid link
+    const linkUrl = url ? url : "#";
     const imageToDisplay = imageSource
 
     return (
