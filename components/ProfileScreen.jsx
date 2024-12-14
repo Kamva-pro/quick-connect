@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, ImageBackground } from 'react-native';
 import { supabase } from '../supabase';
 import { auth } from '../firebase';
+import { Link } from '@react-navigation/native';
 
 // Import background images
 const bgImages = [
@@ -9,6 +10,12 @@ const bgImages = [
   require('../assets/bg-imgs/bg2.jpg'),
   require('../assets/bg-imgs/bg3.jpg'),
 ];
+
+const facebook = require('../assets/facebook.png');
+const instagram = require('../assets/instagram.png');
+const twitter = require('../assets/twitter.png');
+const linkedin = require('../assets/linkedin.png');
+const website = require('../assets/website.png');
 
 const UserProfileScreen = ({ route }) => {
   const { userId } = route.params;
@@ -72,6 +79,14 @@ const UserProfileScreen = ({ route }) => {
         {userData.username && <Text style={styles.username}>{userData.username}</Text>}
         {userData.email && <Text style={styles.email}>{userData.email}</Text>}
         {userData.headline && <Text style={styles.headline}>{userData.headline}</Text>}
+        <View style={styles.socialLinks}>
+          <Link to={userData.facebook}><Image source={{uri: facebook} } style={styles.socialLink}/></Link>
+          <Link to={userData.instagram}><Image source={{uri: instagram} } style={styles.socialLink}/></Link>
+          <Link to={userData.twitter}><Image source={{uri: twitter} } style={styles.socialLink}/></Link>
+          <Link to={userData.linkedin}><Image source={{uri: linkedin} } style={styles.socialLink}/></Link>
+          <Link to={userData.website}><Image source={{uri: website} } style={styles.socialLink}/></Link>
+
+        </View>
         <TouchableOpacity style={styles.button} onPress={handleAddConnection}>
           <Text style={styles.buttonText}>Add Connection</Text>
         </TouchableOpacity>
@@ -213,6 +228,16 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
   },
+
+  socialLinks: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  socialLink: {
+    width: 24,
+    height: 24,
+  }
 });
 
 export default UserProfileScreen;
