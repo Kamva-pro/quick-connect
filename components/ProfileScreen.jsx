@@ -55,6 +55,19 @@ const UserProfileScreen = ({ route }) => {
     return <Text>Loading profile...</Text>;
   }
 
+
+  const renderLink = (url, imageSource) => {
+    // If URL is empty, display the default image
+    const linkUrl = url ? url : "#";  // Set to "#" to avoid opening any invalid link
+    const imageToDisplay = imageSource
+
+    return (
+      <Link to={linkUrl}>
+        <Image source={imageToDisplay} style={styles.socialLink} />
+      </Link>
+    );
+  };
+
   const renderAvatar = () => {
     if (userData.avatar_url) {
       return <Image source={{ uri: userData.avatar_url }} style={styles.avatar} />;
@@ -80,15 +93,15 @@ const UserProfileScreen = ({ route }) => {
         {userData.email && <Text style={styles.email}>{userData.email}</Text>}
         {userData.headline && <Text style={styles.headline}>{userData.headline}</Text>}
         <View style={styles.socialLinks}>
-          <Link to={userData.facebook}><Image source={{uri: facebook} } style={styles.socialLink}/></Link>
-          <Link to={userData.instagram}><Image source={{uri: instagram} } style={styles.socialLink}/></Link>
-          <Link to={userData.twitter}><Image source={{uri: twitter} } style={styles.socialLink}/></Link>
-          <Link to={userData.linkedin}><Image source={{uri: linkedin} } style={styles.socialLink}/></Link>
-          <Link to={userData.website}><Image source={{uri: website} } style={styles.socialLink}/></Link>
+      {renderLink(userData.facebook, facebook)}
+      {renderLink(userData.instagram, instagram)}
+      {renderLink(userData.twitter, twitter)}
+      {renderLink(userData.linkedin, linkedin)}
+      {renderLink(userData.website, website)}
+    </View>
 
-        </View>
         <TouchableOpacity style={styles.button} onPress={handleAddConnection}>
-          <Text style={styles.buttonText}>Add Connection</Text>
+          <Text style={styles.buttonText}>Add</Text>
         </TouchableOpacity>
       </View>
     </View>
