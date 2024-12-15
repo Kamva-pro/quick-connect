@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, Text, StyleSheet, View, Modal, FlatList } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -7,93 +7,99 @@ import HomePage from './components/HomePage';
 import LoginScreen from './components/LoginScreen';
 import Scan from './components/ScanScreen';
 import UserProfileScreen from './components/ProfileScreen';
-import Icon from 'react-native-vector-icons/Ionicons'; 
-import { supabase } from './supabase'; 
-import { auth } from './firebase'; 
+import Icon from 'react-native-vector-icons/Ionicons';
+import { supabase } from './supabase';
+import { auth } from './firebase';
 
 const Stack = createNativeStackNavigator();
-
-const linking = {
-  prefixes: ['quickconnect://'],
-  config: {
-    screens: {
-      Signup: 'signup',
-      Login: 'login',
-      Profile: 'profile/:userId',
-      EditProfile: 'edit-profile',
-      QRCode: 'qr-code',
-      Home: 'home',
-      Scan: 'scan',
-    },
-  },
-};
 
 const App = () => {
   const [username, setUsername] = useState('');
   const [notifications, setNotifications] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const addNotification = (message) => {
-    const id = Date.now().toString();
-    setNotifications((prev) => [...prev, { id, message }]);
-    
-    // Remove notification after 5 seconds
-    setTimeout(() => {
-      setNotifications((prev) => prev.filter((notif) => notif.id !== id));
-    }, 5000);
-  };
-
-  useEffect(() => {
-    const fetchUserData = async () => {
+  const fetchConnectionRequests = async () => {
+    try {
       const user = auth.currentUser;
-      if (user) {
-        const { data, error } = await supabase
-          .from('users')
-          .select('*')
-          .eq('email', user.email)
-          .single();
-        if (error) {
-          console.error(error.message);
-          return;
-        }
-        setUsername(data.username);
+      if (!user) {
+        console.error('No logged-in user.');
+        return;
       }
-    };
-    fetchUserData();
-
-    // Example of adding a notification for testing
-    addNotification('Welcome to Quick Connect!');
+  
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('id')
+        .eq('email', user.email)
+        .single();
+  
+      if (userError) throw userError;
+  
+      const userId = userData.id;
+  
+      const { data: connections, error: connectionError } = await supabase
+        .from('connections')
+        .select('user_id')
+        .eq('connection_id', userId);
+  
+      if (connectionError) throw connectionError;
+  
+      console.log('Connections:', connections); // Debug connections
+  
+      const senderPromises = connections.map(async (connection) => {
+        try {
+          const { data: sender, error: senderError } = await supabase
+            .from('users')
+            .select('id, username, email')
+            .eq('id', connection.user_id)
+            .single();
+  
+          if (senderError) throw senderError;
+          return sender;
+        } catch (error) {
+          console.error('Error fetching sender:', error.message);
+          return null; // Prevent entire process from failing
+        }
+      });
+  
+      const senders = (await Promise.all(senderPromises)).filter(Boolean);
+      setNotifications(senders);
+      console.log('Notifications:', senders); // Debug notifications
+    } catch (error) {
+      console.error('Error fetching connection requests:', error.message);
+    }
+  };
+  
+  useEffect(() => {
+    fetchConnectionRequests();
   }, []);
 
+  useEffect(() => {
+    console.log('Notifications updated:', notifications);
+  }, [notifications]);
+  
+  const handleViewProfile = (userId) => {
+    setModalVisible(false); // Close the modal first
+    navigation.navigate('Profile', { userId });
+  };
+  
+
   return (
-    <NavigationContainer linking={linking}>
+    <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
-        <Stack.Screen 
-          name="Home" 
-          component={HomePage} 
+        <Stack.Screen
+          name="Home"
+          component={HomePage}
           options={{
-            headerLeft: null,
-            headerTitle: "Quick Connect",
-            title: "Quick Connect",
-            headerBackVisible: false,
+            headerTitle: 'Quick Connect',
             headerRight: () => (
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {/* Temporary Notifications Display */}
-                {notifications.length > 0 && (
-                  <View style={styles.notificationBubble}>
-                    <Text style={styles.notificationText}>
-                      {notifications[notifications.length - 1].message}
-                    </Text>
-                  </View>
-                )}
-                {/* Notification Icon */}
-                <Icon 
+                <Icon
                   name="notifications-outline"
-                  size={24} 
-                  color="#000" 
-                  style={{ marginRight: 15 }} 
+                  size={24}
+                  color="#000"
+                  style={{ marginRight: 15 }}
                   onPress={() => setModalVisible(true)}
                 />
               </View>
@@ -112,18 +118,26 @@ const App = () => {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Notifications</Text>
-          <FlatList 
+          <Text style={styles.modalTitle}>Connection Requests</Text>
+          <FlatList
             data={notifications}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
               <View style={styles.notificationItem}>
-                <Text>{item.message}</Text>
+                <Text style={styles.senderName}>{item.username}</Text>
+                <Text style={styles.senderEmail}>{item.email}</Text>
+                <TouchableOpacity
+                  style={styles.viewProfileButton}
+                  onPress={() => handleViewProfile(item.id)}
+
+                >
+                  <Text style={styles.viewProfileText}>View Profile</Text>
+                </TouchableOpacity>
               </View>
             )}
           />
-          <TouchableOpacity 
-            style={styles.closeButton} 
+          <TouchableOpacity
+            style={styles.closeButton}
             onPress={() => setModalVisible(false)}
           >
             <Text style={styles.closeButtonText}>Close</Text>
@@ -135,17 +149,6 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
-  notificationBubble: {
-    backgroundColor: '#f8d7da',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-  notificationText: {
-    color: '#721c24',
-    fontSize: 12,
-  },
   modalContainer: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
@@ -165,6 +168,26 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: '80%',
     alignSelf: 'center',
+  },
+  senderName: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  senderEmail: {
+    fontSize: 14,
+    color: '#555',
+  },
+  viewProfileButton: {
+    marginTop: 10,
+    backgroundColor: '#007bff',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    alignSelf: 'flex-start',
+  },
+  viewProfileText: {
+    color: '#fff',
+    fontSize: 14,
   },
   closeButton: {
     marginTop: 20,

@@ -38,6 +38,8 @@ const LoginScreen = ({ navigation }) => {
         throw supabaseError;
       }
 
+      
+
       navigation.navigate('Home');
     } catch (err) {
       setErrorMessage(err.message);

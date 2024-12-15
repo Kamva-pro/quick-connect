@@ -11,7 +11,7 @@ const ScanScreen = ({ navigation }) => {
 
   useEffect(() => {
     const getPermissions = async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync(); // Request permission with Camera (not CameraView)
+      const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
     };
 
