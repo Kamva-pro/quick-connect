@@ -43,7 +43,7 @@ const App = () => {
   
       if (connectionError) throw connectionError;
   
-      console.log('Connections:', connections); // Debug connections
+      console.log('Connections:', connections); 
   
       const senderPromises = connections.map(async (connection) => {
         try {
@@ -57,13 +57,13 @@ const App = () => {
           return sender;
         } catch (error) {
           console.error('Error fetching sender:', error.message);
-          return null; // Prevent entire process from failing
+          return null; 
         }
       });
   
       const senders = (await Promise.all(senderPromises)).filter(Boolean);
       setNotifications(senders);
-      console.log('Notifications:', senders); // Debug notifications
+      console.log('Notifications:', senders); 
     } catch (error) {
       console.error('Error fetching connection requests:', error.message);
     }
@@ -78,7 +78,7 @@ const App = () => {
   }, [notifications]);
   
   const handleViewProfile = (userId) => {
-    setModalVisible(false); // Close the modal first
+    setModalVisible(false); 
     navigation.navigate('Profile', { userId });
   };
   
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     marginTop: 20,
-    backgroundColor: '#007bff',
+    backgroundColor: '#000',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
