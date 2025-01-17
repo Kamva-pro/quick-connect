@@ -97,11 +97,9 @@ const HomePage = ({ navigation }) => {
         return;
       }
 
-      // Get user's current location
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
 
-      // Get current authenticated user from Firebase and store location in Supabase
       const user = auth.currentUser;
       if (user) {
         try {
@@ -139,12 +137,10 @@ const HomePage = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* Bell Icon to Open Requests Modal */}
       <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.bellIcon}>
         <MaterialCommunityIcons name="bell-outline" size={24} color="#000" />
       </TouchableOpacity>
 
-      {/* Requests Modal */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -193,14 +189,13 @@ const HomePage = ({ navigation }) => {
         </View>
       </Modal>
 
-      {/* Tab Navigator */}
       <Tab.Navigator
         screenOptions={{
           tabBarActiveTintColor: 'black',
           tabBarInactiveTintColor: 'gray',
           tabBarStyle: {
-            backgroundColor: '#fff',  // Ensure background is white
-            borderTopWidth: 0,        // Optional: Remove top border for a cleaner look
+            backgroundColor: '#fff',  
+            borderTopWidth: 0,        
             elevation: 0,                 },
         }}
       >
