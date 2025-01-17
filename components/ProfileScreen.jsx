@@ -4,7 +4,6 @@ import { supabase } from '../supabase';
 import { auth } from '../firebase';
 import { Link } from '@react-navigation/native';
 
-// Import background images
 const bgImages = [
   require('../assets/bg-imgs/bg1.jpg'),
   require('../assets/bg-imgs/bg2.jpg'),
