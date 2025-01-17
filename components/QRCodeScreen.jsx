@@ -19,7 +19,7 @@ const QRCodeScreen = ({navigation}) => {
         const user = auth.currentUser; 
 
         if (user) {
-          // Fetch the user record from Supabase to get the user ID
+          
           const { data: userData, error: fetchError } = await supabase
             .from('users')
             .select('id, qr_code_link') // Select both ID and qr_code_link
@@ -39,7 +39,7 @@ const QRCodeScreen = ({navigation}) => {
         console.error('Error fetching user data:', error);
         setError('Error fetching user data');
       } finally {
-        setLoading(false); // Stop the loading state
+        setLoading(false); 
       }
     };
 
@@ -63,7 +63,7 @@ const QRCodeScreen = ({navigation}) => {
       
     <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
       <QRCode
-        value={qrCodeLink} // Use the fetched qr_code_link
+        value={qrCodeLink} 
         size={250}
         backgroundColor="white"
         color="black"
