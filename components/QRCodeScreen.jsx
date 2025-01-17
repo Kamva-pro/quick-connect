@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
-import { supabase } from '../supabase'; // Adjust the path if needed
-import { auth } from '../firebase'; // Adjust the path if needed
-import QRCode from 'react-native-qrcode-svg'; // Import the QR code component
+import { supabase } from '../supabase'; 
+import { auth } from '../firebase'; 
+import QRCode from 'react-native-qrcode-svg'; 
 import { FloatingAction } from "react-native-floating-action";
 
 
@@ -16,7 +16,7 @@ const QRCodeScreen = ({navigation}) => {
   useEffect(() => {
     const fetchQrCodeLink = async () => {
       try {
-        const user = auth.currentUser; // Get the currently authenticated user
+        const user = auth.currentUser; 
 
         if (user) {
           // Fetch the user record from Supabase to get the user ID
