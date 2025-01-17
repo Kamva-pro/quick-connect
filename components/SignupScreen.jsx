@@ -131,14 +131,14 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
     height: 50,
-    backgroundColor: '#000', // Black button
+    backgroundColor: '#000',
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 15,
   },
   buttonText: {
-    color: '#fff', // White text
+    color: '#fff', 
     fontSize: 16,
     fontWeight: 'bold',
   },
