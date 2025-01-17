@@ -43,12 +43,10 @@ const Nearby = () => {
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
   
-      // Get the current user from Firebase
       const currentUser = auth.currentUser;
   
       if (currentUser) {
         try {
-          // Fetch the user record from Supabase to get the user ID
           const { data: userData, error: fetchError } = await supabase
             .from('users')
             .select('id')
@@ -92,9 +90,9 @@ const Nearby = () => {
               );
   
               return {
-                userId: userLoc.user_id, // Add user ID here
-                username: userData.username, // Username from the 'users' table
-                distance: Math.round(distance), // Distance in meters
+                userId: userLoc.user_id, 
+                username: userData.username, 
+                distance: Math.round(distance), 
               };
             })
           );
@@ -118,9 +116,7 @@ const Nearby = () => {
   
     fetchNearbyUsers();
   }, []);
-   // Fetch nearby users when currentUserId changes
 
-  // Render the user cards
   const renderUserCard = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
